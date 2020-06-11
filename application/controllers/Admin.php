@@ -136,21 +136,6 @@ class Admin extends CI_Controller
   }
 
 
-  function get_autocomplete()
-  {
-    if (isset($_GET['term'])) {
-      $result = $this->AdminModal->getKeyword($_GET['term']);
-      if (count($result) > 0) {
-        foreach ($result as $row)
-          $result_array[] = array(
-            'label' => $row->nama_obat,
-            'hargabeli' => $row->harga_beli,
-            // 'satuan' => strtoupper($row->satuan)
-          );
-        echo json_encode($result_array);
-      }
-    }
-  }
 
   public function tambahpembelian()
   {
@@ -159,24 +144,30 @@ class Admin extends CI_Controller
     $data['supplier'] = $this->AdminModal->getSupplier();
     $data['dataobat'] = $this->AdminModal->getObat();
 
-    if (isset($_GET['term'])) {
-      $result = $this->AdminModel->getKeyword($_GET['term']);
-      if (count($result) > 0) {
-        foreach ($result as $row)
-          $result_array[] = array(
-            'hargabeli' => $row->harga_beli,
-            'satuan' => strtoupper($row->satuan)
-          );
-        echo json_encode($result_array);
-      }
-    }
-
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
     $this->load->view('admin/tambah_pembelian', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
+  }
+
+  function get_autocomplete()
+  {
+
+    if (isset($_GET['term'])) {
+      $result = $this->AdminModal->getKeyword($_GET['term']);
+
+      if (count($result) > 0) {
+        foreach ($result as $row)
+          $result_array[] = array(
+            'label' => $row->nama_obat,
+            'harga_beli' => $row->harga_beli,
+            'id_satuan' => $row->id_satuan,
+          );
+        echo json_encode($result_array);
+      }
+    }
   }
 
   public function supplier()

@@ -30,13 +30,20 @@ class AdminModal extends CI_Model
         ORDER BY nama_obat ASC")->result_array();
     }
 
+    // public function getKeyword($title)
+    // {
+    //     $this->db->select('*');
+    //     $this->db->from('obat');
+    //     $this->db->like('nama_obat', $title, 'both');
+    //     $this->db->order_by('nama_obat', 'asc');
+    //     $this->db->limit(10);
+    //     return $this->db->get('obat')->result();
+    // }
+
     public function getKeyword($title)
     {
-        $this->db->select('*');
-        $this->db->from('obat');
-        $this->db->like('nama_obat', $title, 'both');
-        $this->db->order_by('nama_obat', 'asc');
-        $this->db->limit(10);
+
+        $this->db->like('nama_obat', $title);
         return $this->db->get('obat')->result();
     }
 

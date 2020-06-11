@@ -2,9 +2,10 @@
 </div>
 <!--   Core JS Files   -->
 <script src="<?= base_url('assets/');  ?>assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="<?= base_url('assets/'); ?>js/jquery-3.3.1.js ?>" type="text/javascript"></script>
 <script src="<?= base_url('assets/');  ?>assets/js/core/popper.min.js"></script>
 <script src="<?= base_url('assets/');  ?>assets/js/core/bootstrap.min.js"></script>
-<script src="<?= base_url() . 'assets/assets/js/jquery-ui.js' ?>" type="text/javascript"></script>
+<script src="<?= base_url() . 'assets/js/jquery-ui.js' ?>" type="text/javascript"></script>
 
 <!-- jQuery UI -->
 <script src="<?= base_url('assets/');  ?>assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -360,6 +361,23 @@
             });
         });
 </script> -->
+
+
 </body>
 
 </html>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#obat").autocomplete({
+      source: "<?= base_url('admin/get_autocomplete'); ?>",
+
+      select: function(event, ui) {
+        $('[name="obat"]').val(ui.item.label);
+        $('[name="harga_beli"]').val(ui.item.harga_beli);
+        $('[name="satuan"]').val(ui.item.id_satuan);
+      }
+    });
+  });
+</script>
