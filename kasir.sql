@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Jun 2020 pada 13.53
--- Versi server: 10.1.37-MariaDB
--- Versi PHP: 7.3.1
+-- Generation Time: Jun 11, 2020 at 04:11 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.1.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `active`
+-- Table structure for table `active`
 --
 
 CREATE TABLE `active` (
@@ -35,7 +35,7 @@ CREATE TABLE `active` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `active`
+-- Dumping data for table `active`
 --
 
 INSERT INTO `active` (`id`, `keterangan`, `warna`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `active` (`id`, `keterangan`, `warna`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `bahan`
+-- Table structure for table `bahan`
 --
 
 CREATE TABLE `bahan` (
@@ -60,7 +60,7 @@ CREATE TABLE `bahan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `bahan`
+-- Dumping data for table `bahan`
 --
 
 INSERT INTO `bahan` (`id`, `judul`, `tgl`, `jumlah_bahan`, `total_harga`, `pj`, `Catatan`, `status`) VALUES
@@ -71,7 +71,7 @@ INSERT INTO `bahan` (`id`, `judul`, `tgl`, `jumlah_bahan`, `total_harga`, `pj`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_bahan`
+-- Table structure for table `detail_bahan`
 --
 
 CREATE TABLE `detail_bahan` (
@@ -83,7 +83,7 @@ CREATE TABLE `detail_bahan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `detail_bahan`
+-- Dumping data for table `detail_bahan`
 --
 
 INSERT INTO `detail_bahan` (`id`, `id_bahan`, `nama_bahan`, `jumlah`, `harga`) VALUES
@@ -94,7 +94,7 @@ INSERT INTO `detail_bahan` (`id`, `id_bahan`, `nama_bahan`, `jumlah`, `harga`) V
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_pesanan`
+-- Table structure for table `detail_pesanan`
 --
 
 CREATE TABLE `detail_pesanan` (
@@ -105,7 +105,7 @@ CREATE TABLE `detail_pesanan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `detail_pesanan`
+-- Dumping data for table `detail_pesanan`
 --
 
 INSERT INTO `detail_pesanan` (`id`, `id_pesanan`, `id_menu`, `jumlah`) VALUES
@@ -122,7 +122,7 @@ INSERT INTO `detail_pesanan` (`id`, `id_pesanan`, `id_menu`, `jumlah`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `history_stok`
+-- Table structure for table `history_stok`
 --
 
 CREATE TABLE `history_stok` (
@@ -136,7 +136,7 @@ CREATE TABLE `history_stok` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `history_stok`
+-- Dumping data for table `history_stok`
 --
 
 INSERT INTO `history_stok` (`id`, `tgl`, `id_menu`, `id_kategori`, `sebelum`, `sesudah`, `pj`) VALUES
@@ -145,7 +145,7 @@ INSERT INTO `history_stok` (`id`, `tgl`, `id_menu`, `id_kategori`, `sebelum`, `s
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `karyawan`
+-- Table structure for table `karyawan`
 --
 
 CREATE TABLE `karyawan` (
@@ -159,7 +159,7 @@ CREATE TABLE `karyawan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `karyawan`
+-- Dumping data for table `karyawan`
 --
 
 INSERT INTO `karyawan` (`id`, `nama`, `username`, `password`, `no_hp`, `role_id`, `is_active`) VALUES
@@ -172,7 +172,7 @@ INSERT INTO `karyawan` (`id`, `nama`, `username`, `password`, `no_hp`, `role_id`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `karyawan_access_menu`
+-- Table structure for table `karyawan_access_menu`
 --
 
 CREATE TABLE `karyawan_access_menu` (
@@ -182,23 +182,23 @@ CREATE TABLE `karyawan_access_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `karyawan_access_menu`
+-- Dumping data for table `karyawan_access_menu`
 --
 
 INSERT INTO `karyawan_access_menu` (`id`, `role_id`, `menu_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(5, 1, 5),
 (6, 2, 2),
 (7, 3, 3),
 (8, 4, 4),
 (9, 5, 5),
-(10, 9, 2);
+(10, 9, 2),
+(12, 1, 1),
+(13, 1, 11),
+(14, 1, 35);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `karyawan_menu`
+-- Table structure for table `karyawan_menu`
 --
 
 CREATE TABLE `karyawan_menu` (
@@ -207,22 +207,21 @@ CREATE TABLE `karyawan_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `karyawan_menu`
+-- Dumping data for table `karyawan_menu`
 --
 
 INSERT INTO `karyawan_menu` (`id`, `menu`) VALUES
-(1, 'Admin'),
-(2, 'Server'),
+(1, 'Super Admin'),
 (3, 'Dapur'),
 (4, 'Kasir'),
-(5, 'Gudang'),
 (6, 'Akuntan'),
-(9, 'User');
+(9, 'User'),
+(11, 'Utility');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `karyawan_role`
+-- Table structure for table `karyawan_role`
 --
 
 CREATE TABLE `karyawan_role` (
@@ -231,19 +230,19 @@ CREATE TABLE `karyawan_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `karyawan_role`
+-- Dumping data for table `karyawan_role`
 --
 
 INSERT INTO `karyawan_role` (`id`, `role`) VALUES
-(1, 'Admin'),
-(2, 'Server'),
-(5, 'Gudang'),
+(1, 'Super Admin'),
+(2, 'Admin'),
+(5, 'Kasir'),
 (9, 'User');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `karyawan_sub_menu`
+-- Table structure for table `karyawan_sub_menu`
 --
 
 CREATE TABLE `karyawan_sub_menu` (
@@ -256,28 +255,26 @@ CREATE TABLE `karyawan_sub_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `karyawan_sub_menu`
+-- Dumping data for table `karyawan_sub_menu`
 --
 
 INSERT INTO `karyawan_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active`) VALUES
 (1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 1),
-(2, 1, 'Daftar Karyawan', 'admin/daftar_karyawan', 'fas fa-fw fa-users', 1),
-(3, 1, 'Daftar Menu', 'admin/daftar_menu', 'fas fa-fw fa-utensils', 1),
-(4, 1, 'Daftar Menu', 'admin/daftar_menu', 'fas fa-fw fa-utensils', 0),
-(24, 2, 'Pesanan', 'server', 'fas fa-fw fa-user', 1),
-(25, 2, 'Riwayat Pesanan', 'server/riwayat_pesanan', 'fas fa-fw fa-history', 1),
+(2, 11, 'Managemen User', 'admin/manage_user', 'fas fa-fw fa-users', 1),
 (27, 3, 'Masakan', 'dapur', 'fas fa-fw fa-concierge-bell', 1),
 (28, 3, 'Riwayat Masakan', 'dapur/riwayat_masakan', 'fas fa-fw fa-history', 1),
 (29, 4, 'Pembayaran', 'kasir', 'fas fa-fw fa-cash-register', 1),
 (30, 4, 'Riwayat Pembayaran', 'kasir/riwayat_pembayaran', 'fas fa-fw fa-history', 1),
-(31, 5, 'Daftar Bahan', 'gudang', 'fas fa-fw fa-warehouse', 1),
-(33, 5, 'Daftar Stok', 'gudang/daftar_stok', 'fas fa-fw fa-warehouse', 1),
-(34, 5, 'Riwayat Perubahan Stok', 'gudang/riwayat_stok', 'fas fa-fw fa-history', 1);
+(35, 1, 'Supplier', 'admin/supplier', 'fas fa-cart-plus', 1),
+(36, 1, 'Pembelian', 'admin/pembelian', 'fas fa-cart-arrow-down', 1),
+(37, 1, 'Data Obat', 'admin/dataobat', '\r\nfas fa-medkit', 1),
+(38, 1, 'Laporan Stok', 'admin/stok', 'fas fa-file-alt', 1),
+(39, 1, 'Laporan Pembelian', 'admin/pembelian', 'fas fa-file-invoice', 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kategori`
+-- Table structure for table `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -287,7 +284,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `kategori`
+-- Dumping data for table `kategori`
 --
 
 INSERT INTO `kategori` (`id`, `nama_kategori`, `kategori_aktif`) VALUES
@@ -300,7 +297,7 @@ INSERT INTO `kategori` (`id`, `nama_kategori`, `kategori_aktif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `menu`
+-- Table structure for table `menu`
 --
 
 CREATE TABLE `menu` (
@@ -315,7 +312,7 @@ CREATE TABLE `menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `menu`
+-- Dumping data for table `menu`
 --
 
 INSERT INTO `menu` (`id`, `id_kategori`, `nama_menu`, `harga`, `deskripsi`, `stok`, `foto`, `menu_aktif`) VALUES
@@ -374,7 +371,50 @@ INSERT INTO `menu` (`id`, `id_kategori`, `nama_menu`, `harga`, `deskripsi`, `sto
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pesanan`
+-- Table structure for table `obat`
+--
+
+CREATE TABLE `obat` (
+  `id` int(11) NOT NULL,
+  `id_satuan` int(11) NOT NULL,
+  `nama_obat` varchar(200) NOT NULL,
+  `harga_beli` int(11) NOT NULL,
+  `harga_jual` int(11) NOT NULL,
+  `minimum_stok` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `obat`
+--
+
+INSERT INTO `obat` (`id`, `id_satuan`, `nama_obat`, `harga_beli`, `harga_jual`, `minimum_stok`) VALUES
+(1, 1, 'Panadol', 2500, 5000, 3),
+(2, 1, 'Paracetamol', 5000, 23000, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `obat_satuan`
+--
+
+CREATE TABLE `obat_satuan` (
+  `id` int(11) NOT NULL,
+  `satuan` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `obat_satuan`
+--
+
+INSERT INTO `obat_satuan` (`id`, `satuan`) VALUES
+(1, 'tablet'),
+(2, 'tablet'),
+(3, 'botol');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pesanan`
 --
 
 CREATE TABLE `pesanan` (
@@ -393,7 +433,7 @@ CREATE TABLE `pesanan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `pesanan`
+-- Dumping data for table `pesanan`
 --
 
 INSERT INTO `pesanan` (`id`, `atas_nama`, `jumlah_pesanan`, `total_harga`, `id_status`, `id_status2`, `tanggal`, `server`, `kasir`, `note`, `uang_bayar`, `uang_kembali`) VALUES
@@ -407,7 +447,7 @@ INSERT INTO `pesanan` (`id`, `atas_nama`, `jumlah_pesanan`, `total_harga`, `id_s
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `status`
+-- Table structure for table `status`
 --
 
 CREATE TABLE `status` (
@@ -418,7 +458,7 @@ CREATE TABLE `status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `status`
+-- Dumping data for table `status`
 --
 
 INSERT INTO `status` (`id`, `keterangan`, `simbol`, `class`) VALUES
@@ -429,7 +469,7 @@ INSERT INTO `status` (`id`, `keterangan`, `simbol`, `class`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `status2`
+-- Table structure for table `status2`
 --
 
 CREATE TABLE `status2` (
@@ -440,7 +480,7 @@ CREATE TABLE `status2` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `status2`
+-- Dumping data for table `status2`
 --
 
 INSERT INTO `status2` (`id`, `ket`, `simbol2`, `class2`) VALUES
@@ -451,7 +491,28 @@ INSERT INTO `status2` (`id`, `ket`, `simbol2`, `class2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `id` int(11) NOT NULL,
+  `nama_supplier` varchar(60) NOT NULL,
+  `no_kontak` varchar(13) NOT NULL,
+  `alamat` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id`, `nama_supplier`, `no_kontak`, `alamat`) VALUES
+(1, 'PT. Sinar Naturalindo Berkah', '08977789000', 'Bekasi Jl. Kobra No.78\r\n\r\n\r\n\r\n'),
+(2, 'PT. Sinar Herbal', '08977789123', 'Jl. Sejahtera, Karawang ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -466,7 +527,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `nama`, `email`, `password`, `no_hp`, `date_create`, `role_id`, `is_active`) VALUES
@@ -477,197 +538,233 @@ INSERT INTO `user` (`id`, `nama`, `email`, `password`, `no_hp`, `date_create`, `
 --
 
 --
--- Indeks untuk tabel `active`
+-- Indexes for table `active`
 --
 ALTER TABLE `active`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `bahan`
+-- Indexes for table `bahan`
 --
 ALTER TABLE `bahan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `detail_bahan`
+-- Indexes for table `detail_bahan`
 --
 ALTER TABLE `detail_bahan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `detail_pesanan`
+-- Indexes for table `detail_pesanan`
 --
 ALTER TABLE `detail_pesanan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `history_stok`
+-- Indexes for table `history_stok`
 --
 ALTER TABLE `history_stok`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `karyawan`
+-- Indexes for table `karyawan`
 --
 ALTER TABLE `karyawan`
   ADD PRIMARY KEY (`id`,`username`);
 
 --
--- Indeks untuk tabel `karyawan_access_menu`
+-- Indexes for table `karyawan_access_menu`
 --
 ALTER TABLE `karyawan_access_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `karyawan_menu`
+-- Indexes for table `karyawan_menu`
 --
 ALTER TABLE `karyawan_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `karyawan_role`
+-- Indexes for table `karyawan_role`
 --
 ALTER TABLE `karyawan_role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `karyawan_sub_menu`
+-- Indexes for table `karyawan_sub_menu`
 --
 ALTER TABLE `karyawan_sub_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `kategori`
+-- Indexes for table `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `menu`
+-- Indexes for table `menu`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `pesanan`
+-- Indexes for table `obat`
+--
+ALTER TABLE `obat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `obat_satuan`
+--
+ALTER TABLE `obat_satuan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `status`
+-- Indexes for table `status`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `status2`
+-- Indexes for table `status2`
 --
 ALTER TABLE `status2`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `active`
+-- AUTO_INCREMENT for table `active`
 --
 ALTER TABLE `active`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `bahan`
+-- AUTO_INCREMENT for table `bahan`
 --
 ALTER TABLE `bahan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `detail_bahan`
+-- AUTO_INCREMENT for table `detail_bahan`
 --
 ALTER TABLE `detail_bahan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT untuk tabel `detail_pesanan`
+-- AUTO_INCREMENT for table `detail_pesanan`
 --
 ALTER TABLE `detail_pesanan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
--- AUTO_INCREMENT untuk tabel `history_stok`
+-- AUTO_INCREMENT for table `history_stok`
 --
 ALTER TABLE `history_stok`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `karyawan`
+-- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT untuk tabel `karyawan_access_menu`
+-- AUTO_INCREMENT for table `karyawan_access_menu`
 --
 ALTER TABLE `karyawan_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT untuk tabel `karyawan_menu`
+-- AUTO_INCREMENT for table `karyawan_menu`
 --
 ALTER TABLE `karyawan_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `karyawan_role`
+-- AUTO_INCREMENT for table `karyawan_role`
 --
 ALTER TABLE `karyawan_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `karyawan_sub_menu`
+-- AUTO_INCREMENT for table `karyawan_sub_menu`
 --
 ALTER TABLE `karyawan_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
--- AUTO_INCREMENT untuk tabel `kategori`
+-- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `menu`
+-- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
--- AUTO_INCREMENT untuk tabel `pesanan`
+-- AUTO_INCREMENT for table `obat`
+--
+ALTER TABLE `obat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `obat_satuan`
+--
+ALTER TABLE `obat_satuan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT untuk tabel `status`
+-- AUTO_INCREMENT for table `status`
 --
 ALTER TABLE `status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `status2`
+-- AUTO_INCREMENT for table `status2`
 --
 ALTER TABLE `status2`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `supplier`
+--
+ALTER TABLE `supplier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
