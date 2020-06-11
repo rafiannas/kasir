@@ -15,10 +15,8 @@ class Auth extends CI_Controller
         // if ($this->session->userdata('email')) {
         //     redirect('user');
         // }
-
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
-
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Login Page';
@@ -34,7 +32,6 @@ class Auth extends CI_Controller
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-
         $user = $this->db->get_where('karyawan', ['username' => $username])->row_array();
         //jika usernya ada
         if ($user)
@@ -46,7 +43,6 @@ class Auth extends CI_Controller
                     $data = [
                         'id_karyawan' => $user['id'],
                         'role_id' => $user['role_id']
-
                     ];
                     $this->session->set_userdata($data); //simpen data di session
                     if ($user['role_id'] == 1) {

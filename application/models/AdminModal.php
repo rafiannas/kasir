@@ -14,6 +14,68 @@ class AdminModal extends CI_Model
         ORDER BY karyawan.is_active ASC
         ")->result_array();
     }
+
+    public function getSupplier()
+    {
+        return $this->db->query("SELECT *
+        FROM supplier
+        ORDER BY nama_supplier ASC")->result_array();
+    }
+
+    public function getObat()
+    {
+        return $this->db->query("SELECT obat.*, obat_satuan.satuan
+        FROM obat, obat_satuan
+        where obat.id_satuan = obat_satuan.id
+        ORDER BY nama_obat ASC")->result_array();
+    }
+
+    public function getKeyword($title)
+    {
+        $this->db->select('*');
+        $this->db->from('obat');
+        $this->db->like('nama_obat', $title, 'both');
+        $this->db->order_by('nama_obat', 'asc');
+        $this->db->limit(10);
+        return $this->db->get('obat')->result();
+    }
+
+    // $this->db->select('barang.*, toko.nama_toko');
+    // $this->db->from('barang');
+    // $this->db->join('toko', 'toko.id = barang.id_toko');
+    // $this->db->like('barang.nama_barang', $keyword);
+    // $this->db->or_like('toko.nama_toko', $keyword);
+    // return $this->db->get()->result();
+
+    // public function harga_obat($id_obat)
+    // {
+    //     $this->db->where('id', $id_obat);
+    //     $query = $this->db->get('obat');
+    //     foreach ($query->result() as $k) {
+    //         $output =  $k->harga_beli;
+    //     }
+    //     return $output;
+    // }
+
+    public function kabupaten($id_prov)
+    {
+        $this->db->where('id_prov', $id_prov);
+        $this->db->order_by('kabupaten.nama', 'ASC');
+        $query = $this->db->get('kabupaten');
+        $output = '<option value="">Pilih Kabupaten/Kota</option>';
+        foreach ($query->result() as $k) {
+            $output .= '<option value="' . $k->id_kab . '">' . $k->nama . '</option>';
+        }
+        return $output;
+    }
+
+    public function getSatuan()
+    {
+        return $this->db->query("SELECT *
+        FROM obat_satuan
+        ORDER BY satuan ASC")->result_array();
+    }
+
     public function getDetail($id)
     {
         return $this->db->query("SELECT karyawan.*, active.keterangan, karyawan_role.role FROM karyawan,active, karyawan_role

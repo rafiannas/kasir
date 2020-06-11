@@ -1,57 +1,51 @@
-<br>
 <div class="container">
-  <br><br>
-  <!-- Outer Row -->
-  <div class="row justify-content-center">
-
-    <div class="col-xl-12 col-lg-12 col-md-9">
-      <br><br>
-      <div class="card o-hidden border-0 shadow-lg col-lg-7 mx-auto">
-        <!-- <img src="img/go.png"> -->
-        <h2 class="h4 text-gray-900 mt-2" style="text-align: center; margin-top:10px"><i class="fas fa-fish fa-4x"></i></h2>
-        <div class="card-body p-0">
-          <!-- Nested Row within Card Body -->
-          <div class="row">
-
-            <div class="col-lg">
-              <div class="p-5">
-
-                <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Masuk</h1>
-                </div>
-
-                <?= $this->session->flashdata('message');  ?>
-
-                <form class="user" method="post" action=" <?= base_url('auth'); ?> ">
-                  <div class="form-group">
-
-                    <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="Masukkan username">
-                    <?= form_error('username', '<small class="text-danger pl-3">', '</small>');  ?>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Masukkan Password...">
-                    <?= form_error('password', '<small class="text-danger pl-3">', '</small>');  ?>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary btn-user btn-block">
-                    Masuk
-                  </button>
-
-
-                </form>
-                <hr>
-                <div class="text-center">
-                  <a class="small" href="<?= base_url('auth/temp'); ?>">Temp</a>
-                </div>
-
-              </div>
+  <div class="wrapper wrapper-login">
+    <div class="container container-login animated fadeIn">
+      <center>
+        <img width="200" src="<?= base_url('assets/apotek_logo.png'); ?>" class="text-center"></center>
+      <h3 class="text-center mt-1">Masuk Admin</h3>
+      <?= $this->session->flashdata('message');  ?>
+      <!-- <?= $this->session->flashdata('notif');  ?> -->
+      <form class="user" method="post" action="<?= base_url('auth'); ?>">
+        <div class="login-form">
+          <div class="form-group form-floating-label">
+            <input id="email" name="username" type="text" class="form-control input-border-bottom" required>
+            <label for="email" class="placeholder">Username</label>
+            <?= form_error('email', '<small class="text-danger pl-3">', '</small>');  ?>
+          </div>
+          <div class="form-group form-floating-label">
+            <input id="password" name="password" type="password" class="form-control input-border-bottom form-password" required>
+            <label for="password" class="placeholder">Password</label>
+            <?= form_error('password', '<small class="text-danger pl-3">', '</small>');  ?>
+            <div class="show-password">
+              <i class="icon-eye"></i>
             </div>
           </div>
+          <div class="row form-sub m-0">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="rememberme">
+              <label class="custom-control-label" for="rememberme">Remember Me</label>
+            </div>
+            <a href="<?= base_url('user/lupaPassword'); ?>" class="link float-right">Lupa Password ?</a>
+          </div>
+          <div class="form-action">
+            <button type="submit" class="btn btn-primary btn-rounded btn-login">
+              Masuk
+            </button>
+          </div>
         </div>
-      </div>
-
+      </form>
     </div>
-
   </div>
-
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.form-checkbox').click(function() {
+      if ($(this).is(':checked')) {
+        $('.form-password').attr('type', 'text');
+      } else {
+        $('.form-password').attr('type', 'password');
+      }
+    });
+  });
+</script>

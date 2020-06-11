@@ -44,8 +44,8 @@
     <?php
     $m_id = $m['id'];
     $query_sub_menu = "SELECT *
-                      FROM `karyawan_sub_menu` JOIN `karyawan_menu`
-                      ON `karyawan_sub_menu`.`menu_id` = `karyawan_menu`.`id`
+                      FROM `karyawan_sub_menu` 
+                      JOIN `karyawan_menu` ON `karyawan_sub_menu`.`menu_id` = `karyawan_menu`.`id`
                       WHERE `karyawan_sub_menu`.`menu_id` = $m_id
                       AND `karyawan_sub_menu`.`is_active`= 1
                       ";

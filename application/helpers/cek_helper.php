@@ -2,15 +2,12 @@
 
 function cek_login()
 {
-
-
 	$ci = get_instance();
 	if (!$ci->session->userdata('id_karyawan')) {
 		redirect('auth');
 	} else {
 		$role_id = $ci->session->userdata('role_id');
 		$menu = $ci->uri->segment(1);		//segment mengambil url
-
 
 		$query_menu = $ci->db->get_where('karyawan_menu', ['menu' => $menu])->row_array();
 

@@ -69,7 +69,6 @@ class User extends CI_Controller
 
     public function daftar()
     {
-
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('Phone_Number', 'Phone Number', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
