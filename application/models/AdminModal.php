@@ -42,9 +42,17 @@ class AdminModal extends CI_Model
 
     public function getKeyword($title)
     {
+        $q = "SELECT obat.*, obat_satuan.satuan
+        FROM obat, obat_satuan
+        WHERE obat_satuan.id = obat.id_satuan
+        AND nama_obat LIKE '%$title%'
+        ";
 
-        $this->db->like('nama_obat', $title);
-        return $this->db->get('obat')->result();
+        return $this->db->query($q)->result();
+
+        // $this->db->like('nama_obat', $title);
+        // return $this->db->get('obat')->result();
+
     }
 
     // $this->db->select('barang.*, toko.nama_toko');

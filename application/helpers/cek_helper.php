@@ -10,9 +10,7 @@ function cek_login()
 		$menu = $ci->uri->segment(1);		//segment mengambil url
 
 		$query_menu = $ci->db->get_where('karyawan_menu', ['menu' => $menu])->row_array();
-
 		$menu_id = $query_menu['id'];
-
 		$userAccess = $ci->db->get_where('karyawan_access_menu', [
 			'role_id' => $role_id,
 			'menu_id' => $menu_id

@@ -59,8 +59,8 @@
                                                 <td><?= $i; ?></td>
                                                 <td><?= $s['satuan']; ?></td>
                                                 <td>
-                                                    <a href="<?= base_url('admin/hapus_supplier'); ?>/<?= $s['id']; ?>" class="btn btn-danger btn-circle btn-sm ml-3" onclick="return confirm('Yakin Mau Hapus?');">
-                                                        <i class="fas fa-trash"></i>
+                                                    <a href="<?= base_url('admin/edit_supplier'); ?>/<?= $s['id']; ?>" class="btn btn-success btn-circle btn-sm ml-3" onclick="return confirm('Yakin Mau Hapus?');">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                 </td>
                                             </tr>

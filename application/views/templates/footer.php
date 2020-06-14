@@ -376,8 +376,56 @@
       select: function(event, ui) {
         $('[name="obat"]').val(ui.item.label);
         $('[name="harga_beli"]').val(ui.item.harga_beli);
-        $('[name="satuan"]').val(ui.item.id_satuan);
+        $('[name="satuan"]').val(ui.item.satuan);
       }
     });
   });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.add_cart').click(function() {
+      var produk_id = $(this).data("produkid");
+      var produk_nama = $(this).data("produknama");
+      var produk_harga = $(this).data("produkharga");
+      var quantity = $('#' + produk_id).val();
+      $.ajax({
+        url: "<?php echo base_url(); ?>index.php/cart/add_to_cart",
+        method: "POST",
+        data: {
+          produk_id: produk_id,
+          produk_nama: produk_nama,
+          produk_harga: produk_harga,
+          quantity: quantity
+        },
+        success: function(data) {
+          $('#detail_cart').html(data);
+        }
+      });
+    });
+
+    // Load shopping cart
+    $('#detail_cart').load("<?php echo base_url(); ?>index.php/cart/load_cart");
+
+    //Hapus Item Cart
+    $(document).on('click', '.hapus_cart', function() {
+      var row_id = $(this).attr("id"); //mengambil row_id dari artibut id
+      $.ajax({
+        url: "<?php echo base_url(); ?>cart/hapus_cart",
+        method: "POST",
+        data: {
+          row_id: row_id
+        },
+        success: function(data) {
+          $('#detail_cart').html(data);
+        }
+      });
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    
+  }
 </script>

@@ -2,8 +2,8 @@
     <!-- Logo Header -->
     <div class="logo-header" data-background-color="blue">
 
-        <a href="#" class="logo ml-5 mr-2">
-            <!-- <img src="<?= base_url('assets/');  ?>apotek_logo.png" alt="navbar brand" class="navbar-brand"> -->
+        <a href="index.html" class="logo">
+            <img src="../assets/assets/img/logo.svg" alt="navbar brand" class="navbar-brand">
         </a>
         <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
@@ -23,7 +23,6 @@
     <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
 
         <div class="container-fluid">
-
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
                 <li class="nav-item">
                     <label class="text-white">
@@ -35,7 +34,7 @@
                 <li class="nav-item dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                         <div class="avatar-sm">
-                            <img src="<?= base_url('assets/assets/img/profile.jpg') ?>" alt="..." class="avatar-img rounded-circle">
+                            <img src="../assets/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-user animated fadeIn">

@@ -12,6 +12,7 @@ class Admin extends CI_Controller
 
     $this->load->library('form_validation');
     $this->load->model('AdminModal');
+    $this->load->model('ServerModal');
     //cek_login();
     // $this->load->model('chart_model');
   }
@@ -136,7 +137,6 @@ class Admin extends CI_Controller
   }
 
 
-
   public function tambahpembelian()
   {
     $data['title'] = 'Pembelian';
@@ -144,12 +144,129 @@ class Admin extends CI_Controller
     $data['supplier'] = $this->AdminModal->getSupplier();
     $data['dataobat'] = $this->AdminModal->getObat();
 
+    $cek_awal = $this->ServerModal->cekAwal($this->session->userdata('id_karyawan'));
+    if (!$cek_awal) {
+      $isi = [
+        'id_status' => 1,
+        'id_karyawan' => $this->session->userdata('id_karyawan')
+      ];
+      $this->db->insert('pembelian', $isi);
+      $id_pembelian = $this->db->insert_id();
+    } else {
+      $id_pembelian = $cek_awal['id'];
+    }
+
+    $data['rincian_pembelian'] = $this->ServerModal->listPembelian($id_pembelian);
+
+    $this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
+
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/tambah_pembelian', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $obat = $this->input->post('obat');
+
+      $cek_barang = $this->ServerModal->cekBarang($obat);
+      if ($cek_barang) {
+        $upd = [
+          'jumlah' => $this->input->post('jumlah') + $cek_barang['jumlah'],
+          'satuan' => $this->input->post('satuan'),
+          'harga_per_obat' => ($this->input->post('jumlah') * $this->input->post('harga_beli')) + $cek_barang['harga_per_obat']
+        ];
+
+        $this->db->where('id', $cek_barang['id']);
+        $this->db->update('detail_pembelian', $upd);
+        $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
+        redirect('admin/tambahpembelian');
+      } else {
+        $inp = [
+          'id_pembelian' => $id_pembelian,
+          'obat' => $obat,
+          'harga' => $this->input->post('harga_beli'),
+          'jumlah' => $this->input->post('jumlah'),
+          'satuan' => $this->input->post('satuan'),
+          'harga_per_obat' => $this->input->post('jumlah') * $this->input->post('harga_beli')
+        ];
+        $this->db->insert('detail_pembelian', $inp);
+        $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
+        redirect('admin/tambahpembelian');
+      }
+    }
+  }
+
+  public function checkout()
+  {
+    $data['title'] = 'Pembelian';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+
+    $pembelian = $this->ServerModal->Checkout($this->session->userdata('id_karyawan'));
+    $data['rincian_pembelian'] = $this->ServerModal->listCheckout($pembelian['id']);
+
+
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/tambah_pembelian', $data);
+    $this->load->view('admin/checkout', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
+  }
+
+  function add_to_cart()
+  { //fungsi Add To Cart
+    $data = array(
+      'nama_supplier' => $this->input->post('nama_supplier'),
+      'nota' => $this->input->post('nota'),
+      'obat' => $this->input->post('obat'),
+      'harga_beli' => $this->input->post('harga_beli'),
+      'satuan' => $this->input->post('satuan'),
+      'jumlah' => $this->input->post('jumlah')
+    );
+    $this->cart->insert($data);
+    echo $this->show_cart(); //tampilkan cart setelah added
+  }
+
+  function show_cart()
+  { //Fungsi untuk menampilkan Cart
+    $output = '';
+    $no = 0;
+    foreach ($this->cart->contents() as $items) {
+      $no++;
+      $output .= '
+				<tr>
+					<td>' . $items['obat'] . '</td>
+					<td>' . number_format($items['harga_beli']) . '</td>
+					<td>' . $items['c'] . '</td>
+					<td>' . number_format($items['d']) . '</td>
+          <td><button type="button" id="' . $items['a'] . '" class="hapus_cart btn btn-danger btn-xs">Batal</button></td>
+				</tr>
+			';
+    }
+    $output .= '
+			<tr>
+				<th colspan="3">Total</th>
+				<th colspan="2">' . 'Rp ' . number_format($this->cart->total()) . '</th>
+			</tr>
+		';
+    return $output;
+  }
+
+  function load_cart()
+  { //load data cart
+    echo $this->show_cart();
+  }
+
+  function hapus_cart()
+  { //fungsi untuk menghapus item cart
+    $data = array(
+      'rowid' => $this->input->post('row_id'),
+      'qty' => 0,
+    );
+    $this->cart->update($data);
+    echo $this->show_cart();
   }
 
   function get_autocomplete()
@@ -163,7 +280,7 @@ class Admin extends CI_Controller
           $result_array[] = array(
             'label' => $row->nama_obat,
             'harga_beli' => $row->harga_beli,
-            'id_satuan' => $row->id_satuan,
+            'satuan' => $row->satuan,
           );
         echo json_encode($result_array);
       }
@@ -205,7 +322,7 @@ class Admin extends CI_Controller
     ];
     $this->db->insert('obat_satuan', $tambah);
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan satuan <b>' . $nama . '</b> </div>');
-    redirect('admin/dataobat');
+    redirect('admin/datasatuan');
   }
 
   public function beforeDetail($id)
@@ -285,52 +402,45 @@ class Admin extends CI_Controller
       }
     }
   }
-  public function tambah_karyawan()
+  public function tambah_user()
   {
+    $data['title'] = 'Managemen User';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['active'] = $this->db->get('active')->result_array();
     $data['status'] = $this->db->get('karyawan_role')->result_array();
 
-    $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+    $this->form_validation->set_rules('namauser', 'Nama', 'required|trim');
     $this->form_validation->set_rules(
       'username',
       'Username',
       'required|trim|is_unique[karyawan.username]',
       [
-        'is_unique'     => 'Username sudah dipakai !'
+        'is_unique'     => 'Username sudah terdaftar!'
       ]
     );
-    $this->form_validation->set_rules('no_hp', 'No_hp', 'required|trim');
-    $this->form_validation->set_rules('password', 'Password', 'required|trim');
-    $this->form_validation->set_rules('posisi', 'Posisi', 'required|trim');
-    $this->form_validation->set_rules('is_active', 'Is_active', 'required|trim');
+    $this->form_validation->set_rules('status', 'Status User', 'required|trim');
 
     if ($this->form_validation->run() == false) {
       $this->load->view('templates/header', $data);
       $this->load->view('templates/navbar', $data);
       $this->load->view('templates/sidebar', $data);
-      $this->load->view('admin/tambah_karyawan');
+      $this->load->view('admin/tambah_user');
       $this->load->view('templates/quick_sidebar', $data);
       $this->load->view('templates/footer', $data);
-
-      // $this->load->view('templates/header');
-      // $this->load->view('templates/slidebar');
-      // $this->load->view('templates/topbar', $data);
-      // $this->load->view('admin/tambah_karyawan');
-      // $this->load->view('templates/footer');
     } else {
-
+      $nama = $this->input->post('namauser');
       $tambah = [
-        'nama' => $this->input->post('nama'),
+        'nama' => $this->input->post('namauser'),
         'username' => $this->input->post('username'),
+        'jenis_kelamin' => $this->input->post('gender'),
         'no_hp' => $this->input->post('no_hp'),
         'role_id' => $this->input->post('posisi'),
-        'is_active' => $this->input->post('is_active'),
-        'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
+        'is_active' => $this->input->post('status'),
+        'password' => password_hash($this->input->post('password2'), PASSWORD_DEFAULT)
       ];
       $this->db->insert('karyawan', $tambah);
-      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Berhasil Menambahkan Karyawan !</div>');
-      redirect('admin/daftar_karyawan');
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil Menambahkan <b>' . $nama . '</b> </div>');
+      redirect('admin/manage_user');
     }
   }
 
@@ -504,28 +614,29 @@ class Admin extends CI_Controller
     }
   }
 
-  public function hapus_per_kategori($id)
+  public function hapus_barang($id)
   {
     $this->db->where('id', $id);
-    $this->db->delete('menu');
+    $this->db->delete('detail_pembelian');
 
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus kategori</div>');
-    redirect('admin/per_kategori');
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success tutup" role="alert">Berhasil Menghapus obat ! </div>');
+    redirect('admin/tambahpembelian');
   }
+
   public function hapus_karyawan($id)
   {
     $this->db->where('id', $id);
     $this->db->delete('karyawan');
 
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Karyawan</div>');
-    redirect('admin/daftar_karyawan');
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Berhasil Menghapus Karyawan</div>');
+    redirect('admin/manage_user');
   }
   public function hapus_kategori($id)
   {
     $this->db->where('id', $id);
     $this->db->delete('kategori');
 
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Kategori</div>');
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Berhasil Menghapus Kategori</div>');
     redirect('admin/daftar_menu');
   }
 

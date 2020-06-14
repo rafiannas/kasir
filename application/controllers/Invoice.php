@@ -11,6 +11,20 @@ class Invoice extends CI_Controller
         $this->load->model('ServerModal');
     }
 
+    public function pdf($id_invoice)
+    {
+        $this->load->library('dompdf_gen');
+        $data['export'] = $this->Model_invoice->exportinvoice($id_invoice);
+        $this->load->view('manajemen_toko/pdf', $data);
+        $paper_size = 'A4';
+        $orientation = 'potrait';
+        $html = $this->output->get_output();
+        $this->dompdf->set_paper($paper_size, $orientation);
+        $this->dompdf->load_html($html);
+        $this->dompdf->render();
+        $this->dompdf->stream("Laporan_Data_Pesanan.pdf", array('Attachment' => 0));
+    }
+
     function index()
     {
         $id = $this->session->userdata('id_sd');
@@ -27,7 +41,7 @@ class Invoice extends CI_Controller
         // $pdf->image("index.php/assets/logo_tajeer.png", 30, 7);
         $pdf->Cell(137, 7, 'INVOICE', 0, 1, 'C');
         $pdf->SetFont('Arial', 'B', 8);
-        $pdf->Cell(137, 7, 'STORE', 0, 1, 'C');
+        $pdf->Cell(137, 7, 'Apotek Griya Cinere', 0, 1, 'C');
         // Memberikan space kebawah agar tidak terlalu rapat
 
         $pdf->SetFont('Arial', '', 7);

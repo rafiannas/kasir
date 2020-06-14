@@ -85,6 +85,18 @@ $menu = $this->db->query($query_menu)->result_array();
                         <?php endforeach; ?>
                         <!-- Divider -->
                     <?php endforeach; ?>
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section">Keluar</h4>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('auth/logout'); ?>">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <p>Keluar</p>
+                        </a>
+                    </li>
             </ul>
         </div>
     </div>

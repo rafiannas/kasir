@@ -1,83 +1,150 @@
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">kasir</h1><br>
-        </div>
-
-        <?= $this->session->flashdata('message');  ?>
-
-        <div class="container-fluid">
-
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-            <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
-
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-
-                                    <th>No</th>
-                                    <th>Detail</th>
-                                    <th>Tanggal</th>
-                                    <th>Atas Nama</th>
-                                    <th>Jumlah Pesanan</th>
-                                    <th>Status Bayar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1;
-                                foreach ($listPesanan as $rp) : ?>
-                                    <tr>
-                                        <td><?= $i; ?></td>
-                                        <td><a href="<?= base_url('kasir/detail_ks'); ?>/<?= $rp['id']; ?>" class="btn btn-info btn-icon-split">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-info-circle"></i>
-                                                </span>
-                                                <span class="text">Details</span>
-                                            </a></td>
-                                        <td><?= $rp['tanggal']; ?></td>
-                                        <td><?= $rp['atas_nama']; ?></td>
-                                        <td><?= $rp['jumlah_pesanan']; ?></td>
-                                        <td><a href="" class="<?= $rp['class']; ?>"><i class="<?= $rp['simbol']; ?>"></i></a></td>
-                                    </tr>
-                                <?php $i += 1;
-                                endforeach; ?>
-                            </tbody>
-                        </table>
+<div class="main-panel">
+    <div class="container">
+        <div class="panel-header bg-primary-gradient">
+            <div class="page-inner py-5">
+                <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                    <div>
+                        <h2 class="text-white pb-2 fw-bold"><b>Halo,
+                                <!-- <?php foreach ($profil as $p) : ?> <?= $p['nama']; ?> <?php endforeach; ?>!</b></h2> -->
+                                <h5 class="text-white op-7 mb-2">Ini kabar terbaru dari tokomu</h5>
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-
-
+        <div class="page-inner mt--5">
+            <div class="row row-card-no-pd mt--2">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="flaticon-coins text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-stats">
+                                    <div class="numbers">
+                                        <!-- <?php $bulan = date('m');
+                                                if ($bulan == "01") {
+                                                    $bulan = "Januari";
+                                                } elseif ($bulan == "02") {
+                                                    $bulan = "Februari";
+                                                } elseif ($bulan == "03") {
+                                                    $bulan = "Maret";
+                                                } elseif ($bulan == "04") {
+                                                    $bulan = "April";
+                                                } elseif ($bulan == "05") {
+                                                    $bulan = "Mei";
+                                                } elseif ($bulan == "06") {
+                                                    $bulan = "Juni";
+                                                } elseif ($bulan == "07") {
+                                                    $bulan = "Juli";
+                                                } elseif ($bulan == "08") {
+                                                    $bulan = "Agustus";
+                                                } elseif ($bulan == "09") {
+                                                    $bulan = "September";
+                                                } elseif ($bulan == "10") {
+                                                    $bulan = "Oktober";
+                                                } elseif ($bulan == "11") {
+                                                    $bulan = "November";
+                                                } elseif ($bulan == "12") {
+                                                    $bulan = "Desember";
+                                                }
+                                                ?> -->
+                                        <p class="card-category">Pendapatan: <?= $bulan; ?></p>
+                                        <h4 class="card-title">
+                                            <!-- <?php
+                                                    if ($pendapatan['pendapatan_kotor'] == null) {
+                                                        $pen = "0";
+                                                        echo $pen;
+                                                    } else {
+                                                        echo number_format($pendapatan['pendapatan_kotor']);
+                                                    }
+                                                    ?> -->
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="flaticon-cart-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-stats">
+                                    <div class="numbers">
+                                        <!-- <?php $i = 0;
+                                                foreach ($belumdiproses as $p) : ?>
+                                            <?php $i++; ?>
+                                        <?php endforeach;
+                                                $pesananbaru = $i; ?>
+                                        <p class="card-category">Pesanan Baru</p>
+                                        <h4 class="card-title"><?= $pesananbaru; ?></h4> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="flaticon-box-2 text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-stats">
+                                    <div class="numbers">
+                                        <p class="card-category">Terjual</p>
+                                        <!-- <h4 class="card-title"><?= $order['jmh']; ?></h4> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="flaticon-success text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-stats">
+                                    <div class="numbers">
+                                        <!-- <?php $i = 0;
+                                                foreach ($produk_aktif as $p) : ?>
+                                            <?php $i++; ?>
+                                        <?php endforeach;
+                                                $aktifproduk = $i; ?>
+                                        <p class="card-category">Produk Aktif</p>
+                                        <h4 class="card-title">
+                                            <?= $aktifproduk; ?>
+                                        </h4> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-    </div>
-    <!-- /.container-fluid -->
-
-    </div>
-    <!-- End of Main Content -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="copyright ml-auto">
+                <?= date('Y') ?>, Develope with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.if.uai.ac.id">IF UAI</a>
+            </div>
+        </div>
+    </footer>
+</div>

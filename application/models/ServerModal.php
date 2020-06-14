@@ -38,16 +38,47 @@ class ServerModal extends CI_Model
 
     public function cekAwal($id)
     {
-        $q = "SELECT * FROM pesanan WHERE id_status =1
-        AND server = $id
+        $q = "SELECT * FROM pembelian
+         WHERE id_status = 1
+        AND id_karyawan = $id
         ";
         return $this->db->query($q)->row_array();
     }
-    public function listPesanan($id)
+
+    public function cekBarang($obat)
     {
-        $q = "SELECT detail_pesanan.*, menu.nama_menu, menu.harga FROM detail_pesanan, menu WHERE id_pesanan = $id AND detail_pesanan.id_menu = menu.id ";
+        $q = "SELECT * FROM detail_pembelian
+                WHERE obat = '$obat'
+        ";
+        return $this->db->query($q)->row_array();
+    }
+
+    public function listPembelian($id)
+    {
+        $q = "SELECT * FROM detail_pembelian
+            WHERE id_pembelian = $id
+        ";
         return $this->db->query($q)->result_array();
     }
+
+    public function Checkout($id)
+    {
+        $q = "SELECT * FROM pembelian
+            WHERE id_karyawan = $id
+            AND id_status
+        ";
+        return $this->db->query($q)->row_array();
+    }
+
+
+    public function listCheckout($id)
+    {
+        $q = "SELECT * FROM detail_pembelian
+            WHERE id_pembelian = $id
+        ";
+        return $this->db->query($q)->result_array();
+    }
+
     public function cekMenu($id)
     {
         return $this->db->get_where('menu', ['id' => $id])->row_array();
