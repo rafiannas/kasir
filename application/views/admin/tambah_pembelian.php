@@ -22,7 +22,6 @@
                                         <input type="text" class="form-control" name="satuan" id="satuan" readonly>
                                     </div>
 
-
                                 </div>
 
                                 <label class="mb-2 mt-2">Harga</label>

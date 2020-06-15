@@ -29,12 +29,6 @@ class Admin extends CI_Controller
     $this->load->view('admin/index', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
-
-    // $this->load->view('templates/header');
-    // $this->load->view('templates/slidebar');
-    // $this->load->view('templates/topbar', $data);
-    // $this->load->view('admin/home_ad');
-    // $this->load->view('templates/footer');
   }
 
   public function fetch_hargaobat()
@@ -60,82 +54,148 @@ class Admin extends CI_Controller
     $this->load->view('templates/footer', $data);
   }
 
-  public function dataobat()
+  public function obat()
   {
-    $data['title'] = 'Data Obat';
+    $data['title'] = 'Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
-    $data['dataobat'] = $this->AdminModal->getObat();
-
-    $this->load->view('templates/header', $data);
-    $this->load->view('templates/navbar', $data);
-    $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/data_obat', $data);
-    $this->load->view('templates/quick_sidebar', $data);
-    $this->load->view('templates/footer', $data);
-  }
-
-  public function tambahobat()
-  {
-    $data['title'] = 'Data Obat';
-    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['obat'] = $this->AdminModal->getObat();
     $data['satuanobat'] = $this->AdminModal->getSatuan();
 
     $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
-    $this->form_validation->set_rules('hargabeli', 'Harga Beli', 'required|trim');
-    $this->form_validation->set_rules('hargajual', 'Harga Jual', 'trim');
-    $this->form_validation->set_rules('minstok', 'Minimal Stok', 'trim');
     $this->form_validation->set_rules('satuan', 'Satuan Obat', 'required|trim');
-
     if ($this->form_validation->run() == false) {
       $this->load->view('templates/header', $data);
       $this->load->view('templates/navbar', $data);
       $this->load->view('templates/sidebar', $data);
-      $this->load->view('admin/tambah_obat', $data);
+      $this->load->view('admin/obat', $data);
       $this->load->view('templates/quick_sidebar', $data);
       $this->load->view('templates/footer', $data);
     } else {
-      $obat = $this->input->post('namaobat');
+      $nama = $this->input->post('namaobat');
+      $satuan = $this->input->post('satuan');
       $tambah = [
-        'id_satuan' => $this->input->post('satuan'),
-        'nama_obat' => $obat,
-        'harga_beli' => $this->input->post('hargabeli'),
-        'harga_jual' => $this->input->post('hargajual'),
-        'minimum_stok' => $this->input->post('minstok'),
+        'nama_obat' => $nama,
+        'id_satuan' => $satuan,
       ];
-      $this->db->insert('obat', $tambah);
-      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $obat . '</b> </div>');
-      redirect('admin/dataobat');
+      $this->db->insert('daftar_obat', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $nama . '</b> </div>');
+      redirect('admin/obat');
     }
   }
 
-  public function datasatuan()
+  public function katalog_obat()
   {
-    $data['title'] = 'Data Obat';
+    $data['title'] = 'Katalog Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
-    $data['obatsatuan'] = $this->AdminModal->getSatuan();
+    $data['obat'] = $this->AdminModal->getObat();
+    $data['katalog'] = $this->AdminModal->getKatalog();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/data_satuan', $data);
+    $this->load->view('admin/katalog', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
   }
 
-  public function pembelian()
+  public function tambah_katalog()
   {
-    $data['title'] = 'Pembelian';
+    $data['title'] = 'Katalog Obat';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['satuanobat'] = $this->AdminModal->getSatuan();
+    $data['supplier'] = $this->AdminModal->getSupplier();
+    $data['obat'] = $this->AdminModal->getObat();
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/navbar', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('admin/tambah_katalog', $data);
+    $this->load->view('templates/quick_sidebar', $data);
+    $this->load->view('templates/footer', $data);
+  }
+
+
+  public function addkatalog()
+  {
+    date_default_timezone_set('Asia/Jakarta');
+    $tambah = [
+      'id_daftar_obat' => $this->input->post('obat'),
+      'id_supplier' => $this->input->post('supplier'),
+      'harga_beli' => $this->input->post('hargabeli'),
+      'jumlah_obat' => $this->input->post('stok'),
+      'tgl_input' => date('Y-m-d H:i:s'),
+    ];
+    $this->db->insert('obat', $tambah);
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan katalog </div>');
+    redirect('admin/katalog_obat');
+  }
+
+
+  public function datasatuan()
+  {
+    $data['title'] = 'Obat';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['obatsatuan'] = $this->AdminModal->getSatuan();
+
+    $this->form_validation->set_rules('satuan', 'Satuan Obat', 'required|trim');
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/data_satuan', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $nama = $this->input->post('satuan');
+      $tambah = [
+        'satuan' => $nama,
+      ];
+      $this->db->insert('obat_satuan', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan satuan <b>' . $nama . '</b> </div>');
+      redirect('admin/datasatuan');
+    }
+  }
+
+  public function penjualan()
+  {
+    $data['title'] = 'Penjualan';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['supplier'] = $this->AdminModal->getSupplier();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/pembelian', $data);
+    $this->load->view('admin/penjualan', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
   }
 
+  public function laporan_penjualan()
+  {
+    $data['title'] = 'Laporan Penjualan';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['supplier'] = $this->AdminModal->getSupplier();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/navbar', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('admin/laporan_penjualan', $data);
+    $this->load->view('templates/quick_sidebar', $data);
+    $this->load->view('templates/footer', $data);
+  }
+
+  public function laporan_stok()
+  {
+    $data['title'] = 'Laporan Stok';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['supplier'] = $this->AdminModal->getSupplier();
+
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/navbar', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('admin/laporan_stok', $data);
+    $this->load->view('templates/quick_sidebar', $data);
+    $this->load->view('templates/footer', $data);
+  }
 
   public function tambahpembelian()
   {
@@ -205,8 +265,6 @@ class Admin extends CI_Controller
 
     $pembelian = $this->ServerModal->Checkout($this->session->userdata('id_karyawan'));
     $data['rincian_pembelian'] = $this->ServerModal->listCheckout($pembelian['id']);
-
-
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
@@ -301,6 +359,58 @@ class Admin extends CI_Controller
     $this->load->view('templates/footer', $data);
   }
 
+
+  public function geteditsupplier()
+  {
+    $this->load->model('AdminModal', 'supplier');
+    echo json_encode($this->supplier->getSupplierById($_POST['id']));
+  }
+
+  public function edit_supplier()
+  {
+    $input_id = $_POST['id'];
+    $input_alamat = $_POST['alamatsu'];
+    $input_nama = $_POST['namasu'];
+    $input_nomor = $_POST['no_kontaksu'];
+    $query = "UPDATE `supplier` SET `nama_supplier` = '$input_nama', `alamat` = '$input_alamat', `no_kontak` = '$input_nomor' WHERE `id` ='$input_id' ";
+    $this->db->query($query);
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Supplier berhasil di updated!</div>');
+    redirect('admin/supplier');
+  }
+
+  public function geteditobat()
+  {
+    $this->load->model('AdminModal', 'daftar_obat');
+    echo json_encode($this->daftar_obat->getObatById($_POST['id']));
+  }
+
+  public function edit_obat()
+  {
+    $input_id = $_POST['id'];
+    $input_namaobat = $_POST['namaobatku'];
+    $input_satuan = $_POST['basic'];
+    $query = "UPDATE `daftar_obat` SET `nama_obat` = '$input_namaobat', `id_satuan` = '$input_satuan' WHERE `id` ='$input_id' ";
+    $this->db->query($query);
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Obat berhasil di updated!</div>');
+    redirect('admin/obat');
+  }
+
+  public function geteditsatuan()
+  {
+    $this->load->model('AdminModal', 'obat_satuan');
+    echo json_encode($this->obat_satuan->getSatuanById($_POST['id']));
+  }
+
+  public function edit_satuan()
+  {
+    $input_id = $_POST['id'];
+    $input_satuan = $_POST['satuan'];
+    $query = "UPDATE `obat_satuan` SET `satuan` = '$input_satuan' WHERE `id` ='$input_id' ";
+    $this->db->query($query);
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Satuan obat berhasil di updated!</div>');
+    redirect('admin/datasatuan');
+  }
+
   public function tambah_supplier()
   {
     $nama = $this->input->post('nama');
@@ -312,17 +422,6 @@ class Admin extends CI_Controller
     $this->db->insert('supplier', $tambah);
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan supplier <b>' . $nama . '</b> </div>');
     redirect('admin/supplier');
-  }
-
-  public function tambah_satuan()
-  {
-    $nama = $this->input->post('satuan');
-    $tambah = [
-      'satuan' => $nama,
-    ];
-    $this->db->insert('obat_satuan', $tambah);
-    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan satuan <b>' . $nama . '</b> </div>');
-    redirect('admin/datasatuan');
   }
 
   public function beforeDetail($id)

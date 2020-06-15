@@ -30,10 +30,10 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"><?= $title ?></h4>
-                                <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
+                                <a href="<?= base_url('admin/tambah_katalog') ?>" class="btn btn-primary btn-round ml-auto">
                                     <i class="fa fa-plus"></i>
-                                    Tambah Supplier
-                                </button>
+                                    Tambah
+                                </a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -42,24 +42,26 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
-                                            <th>Nama Supplier</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Aksi</th>
+                                            <th>Obat</th>
+                                            <th>Satuan</th>
+                                            <th>Supplier</th>
+                                            <th>Harga Beli</th>
+                                            <th>Stok</th>
+                                            <th>Tgl. Berlaku</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         $i = 1;
-                                        foreach ($supplier as $su) : ?>
+                                        foreach ($katalog as $su) : ?>
                                             <tr>
                                                 <td align="center"><?= $i; ?></td>
+                                                <td><?= $su['nama_obat']; ?></td>
+                                                <td><?= $su['satuan']; ?></td>
                                                 <td><?= $su['nama_supplier']; ?></td>
-                                                <td><?= $su['alamat']; ?></td>
-                                                <td><?= $su['no_kontak']; ?></td>
-                                                <td align="center">
-                                                    <a href="<?= base_url('admin/edit_supplier/'); ?><?= $su['id']; ?>" class="btn btn-success btn-sm editsupplier" data-toggle="modal" data-target="#edit" data-id="<?= $su['id']; ?>"><i class="fas fa-edit"></i></a>
-                                                </td>
+                                                <td align="right">Rp.<?= number_format($su['harga_beli']) ?></td>
+                                                <td align="center"><?= number_format($su['jumlah_obat']) ?></td>
+                                                <td align="center"><?= $su['tgl_input']; ?></td>
                                             </tr>
                                         <?php $i += 1;
                                         endforeach; ?>
@@ -127,60 +129,6 @@
                 </div>
                 <div class="modal-footer border-0">
                     <button type="submit" id="addRowButton" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title">
-                    <span class="fw-mediumbold">
-                        Edit Data</span>
-                    <span class="fw-light">
-                        Supplier
-                    </span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('admin/edit_supplier/'); ?>" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <p class="small">Mengupdate data supplier, pastikan semua terisi dengan benar</p>
-                    <input type="hidden" name="id" id="id">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group form-group-default">
-                                <label>Nama Supplier</label>
-                                <input type="text" class="form-control" id="namasu" name="namasu" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group form-group-default">
-                                <label>Alamat</label>
-                                <textarea class="form-control" name="alamatsu" id="alamatsu" cols="5" rows="2" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group form-group-default">
-                                <label>Nomor Kontak</label>
-                                <input type="text" class="form-control" name="no_kontaksu" id="no_kontaksu" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                 </div>
             </form>

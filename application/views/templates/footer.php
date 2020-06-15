@@ -85,6 +85,7 @@
 
 <!-- Menu JS -->
 <script src="<?= base_url('assets/'); ?>assets/js/menu.js"></script>
+<script src="<?= base_url('assets/'); ?>assets/js/edit.js"></script>
 
 <!-- Format Rupiah JS -->
 <script src="<?= base_url('assets/'); ?>assets/js/format_rupiah.js"></script>
@@ -422,10 +423,4 @@
       });
     });
   });
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    
-  }
 </script>

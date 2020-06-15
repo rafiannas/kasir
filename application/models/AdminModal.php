@@ -22,11 +22,43 @@ class AdminModal extends CI_Model
         ORDER BY nama_supplier ASC")->result_array();
     }
 
+    public function getSupplierById($id)
+    {
+        $query = "SELECT * FROM `supplier` WHERE `supplier`.`id` = $id";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function getSatuanById($id)
+    {
+        $query = "SELECT * FROM `obat_satuan` WHERE `id` = $id";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function getObatById($id)
+    {
+        $query = "SELECT daftar_obat.*, obat_satuan.satuan
+        FROM daftar_obat, obat_satuan
+        where daftar_obat.id_satuan = obat_satuan.id
+        AND daftar_obat.id = $id
+        ORDER BY nama_obat ASC ";
+        return $this->db->query($query)->row_array();
+    }
+
     public function getObat()
     {
-        return $this->db->query("SELECT obat.*, obat_satuan.satuan
-        FROM obat, obat_satuan
-        where obat.id_satuan = obat_satuan.id
+        return $this->db->query("SELECT daftar_obat.*, obat_satuan.satuan
+        FROM daftar_obat, obat_satuan
+        where daftar_obat.id_satuan = obat_satuan.id
+        ORDER BY nama_obat ASC")->result_array();
+    }
+
+    public function getKatalog()
+    {
+        return $this->db->query("SELECT daftar_obat.*, obat_satuan.satuan, obat.*, supplier.nama_supplier
+        FROM daftar_obat, obat_satuan, obat, supplier
+        where daftar_obat.id_satuan = obat_satuan.id
+        AND obat.id_daftar_obat = daftar_obat.id
+        AND obat.id_supplier = supplier.id
         ORDER BY nama_obat ASC")->result_array();
     }
 

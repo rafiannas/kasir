@@ -139,7 +139,6 @@ class Kasir extends CI_Controller
     $this->dompdf->stream("Struk_Pesanan.pdf", array('Attachment' => 0));
   }
 
-
   public function hapus_barang($id)
   {
     $this->db->where('id', $id);

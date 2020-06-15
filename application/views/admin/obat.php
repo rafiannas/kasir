@@ -19,7 +19,7 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><strong>Data Satuan</strong></a>
+                        <a href="#"><strong>Obat</strong></a>
                     </li>
                 </ul>
             </div>
@@ -30,23 +30,24 @@
                         <div class="card-header">
                             <div class="row row-nav-line">
                                 <ul class="nav nav-tabs nav-line nav-color-primary w-100 pl-4" role="tablist">
-                                    <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/obat'); ?>" role="tab" aria-selected="true">Daftar Obat</a> </li>
-                                    <li class="nav-item"> <a class="nav-link active show" href="<?= base_url('admin/datasatuan'); ?>" role="tab" aria-selected="false">Satuan Obat</a> </li>
+                                    <li class="nav-item"> <a class="nav-link active show" href="<?= base_url('admin/dataobat'); ?>" role="tab" aria-selected="true">Daftar Obat</a> </li>
+                                    <li class="nav-item"> <a class="nav-link" href="<?= base_url('admin/datasatuan'); ?>" role="tab" aria-selected="false">Satuan Obat</a> </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#tambahsatuan">
+                                <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
                                     <i class="fa fa-plus"></i>
-                                    Tambah Satuan
+                                    Tambah Obat
                                 </button>
                             </div>
                             <div class="table-responsive mt-4">
-                                <table id="tabel2" class="display table table-striped table-hover">
+                                <table id="add-row" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
+                                            <th>Nama Obat</th>
                                             <th>Satuan</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -54,12 +55,13 @@
                                     <tbody>
                                         <?php
                                         $i = 1;
-                                        foreach ($obatsatuan as $s) : ?>
+                                        foreach ($obat as $su) : ?>
                                             <tr>
                                                 <td align="center"><?= $i; ?></td>
-                                                <td><?= $s['satuan']; ?></td>
+                                                <td><?= $su['nama_obat']; ?></td>
+                                                <td><?= $su['satuan']; ?></td>
                                                 <td align="center">
-                                                    <a href="<?= base_url('admin/edit_satuan/'); ?><?= $s['id']; ?>" class="btn btn-success btn-sm editsatuan" data-toggle="modal" data-target="#edit" data-id="<?= $s['id']; ?>"><i class="fas fa-edit"></i></a>
+                                                    <a href="<?= base_url('admin/edit_obat/'); ?><?= $su['id']; ?>" class="btn btn-success btn-sm editobat" data-toggle="modal" data-target="#edit" data-id="<?= $su['id']; ?>"><i class="fas fa-edit"></i></a>
                                                 </td>
                                             </tr>
                                         <?php $i += 1;
@@ -83,7 +85,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="tambahsatuan" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -91,21 +93,34 @@
                     <span class="fw-mediumbold">
                         Entri Data</span>
                     <span class="fw-light">
-                        Satuan
+                        Obat
                     </span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('admin/datasatuan/'); ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= base_url('admin/obat/'); ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <p class="small">Menambahkan satuan obat baru, harap terisi dengan benar.</p>
+                    <p class="small">Menambahkan Obat baru, harap semua terisi dengan benar.</p>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group form-group-default">
-                                <label>Satuan Obat</label>
-                                <input type="text" class="form-control" name="satuan" placeholder="Masukkan satuan, contoh: tablet, botol" required>
+                                <label>Nama Obat</label>
+                                <input type="text" class="form-control" id="namaobat" name="namaobat" placeholder="Masukkan nama obat" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                <label class="mb-2">Satuan Obat</label>
+                                <select id="basic2" name="satuan" class="form-control mt-2 mb-2" required style="width:100%;">
+                                    <option value="">- Pilih Satuan -</option>
+                                    <?php foreach ($satuanobat as $st) : ?>
+                                        <option value="<?= $st['id']; ?>"><?= $st['satuan']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -128,22 +143,38 @@
                     <span class="fw-mediumbold">
                         Edit Data</span>
                     <span class="fw-light">
-                        Satuan
+                        Obat
                     </span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('admin/edit_satuan/'); ?>" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" id="id">
+            <form action="<?= base_url('admin/edit_supplier/'); ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
-                    <p class="small">Menambahkan satuan obat baru, harap terisi dengan benar.</p>
+                    <p class="small">Mengupdate data obat, pastikan semua terisi dengan benar</p>
+                    <input type="hidden" name="id" id="id">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group form-group-default">
-                                <label>Satuan Obat</label>
-                                <input type="text" class="form-control" id="satuan" name="satuan" required>
+                                <label>Nama Obat</label>
+                                <input type="text" class="form-control" id="namaobatku" name="namaobatku" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                <label class="mb-2">Satuan Obat</label>
+                                <select id="basic" name="basic" class="form-control mt-2 mb-2" required style="width:100%;">
+                                    <option value="">- Pilih Satuan -</option>
+                                    <?php foreach ($satuanobat as $st) : ?>
+                                        <option <?php if ($st['id'] == 'basic') {
+                                                    echo "selected";
+                                                } ?> value="<?= $st['id']; ?>"><?= $st['satuan']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                     </div>
