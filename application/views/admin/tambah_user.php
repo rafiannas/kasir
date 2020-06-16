@@ -13,7 +13,13 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Managemen User</a>
+                        <a href="#">Utility</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('admin/manage_user') ?>">Managemen User</a>
                     </li>
                     <li class="separator">
                         <i class="flaticon-right-arrow"></i>
@@ -82,7 +88,7 @@
                                             <select id="state" name="posisi" class="form-control" required>
                                                 <option value="">&nbsp;</option>
                                                 <optgroup label="Hak Akses">
-                                                    <?php foreach ($status as $st) : ?>
+                                                    <?php foreach ($akses as $st) : ?>
                                                         <option value="<?= $st['id']; ?>"><?= $st['role']; ?></option>
                                                     <?php endforeach; ?>
                                                 </optgroup>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Jun 2020 pada 19.08
+-- Waktu pembuatan: 16 Jun 2020 pada 05.43
 -- Versi server: 10.4.8-MariaDB
 -- Versi PHP: 7.1.33
 
@@ -103,6 +103,7 @@ CREATE TABLE `karyawan` (
   `username` varchar(20) NOT NULL,
   `password` varchar(256) NOT NULL,
   `jenis_kelamin` varchar(5) NOT NULL,
+  `foto_user` text NOT NULL,
   `no_hp` varchar(13) NOT NULL,
   `role_id` int(11) NOT NULL,
   `is_active` int(1) NOT NULL
@@ -112,10 +113,11 @@ CREATE TABLE `karyawan` (
 -- Dumping data untuk tabel `karyawan`
 --
 
-INSERT INTO `karyawan` (`id`, `nama`, `username`, `password`, `jenis_kelamin`, `no_hp`, `role_id`, `is_active`) VALUES
-(7, 'Arif S', 'arif', '$2y$10$oZU1M/v2RaVUf6PmaEH7r.qfnMgMu4zTZwTzjENGf04AAhqol0hyi', 'L', '081231232', 1, 1),
-(21, 'NABIL', 'nabil', '$2y$10$pFm1C.vPwDePem/qlgaI3ekonmbBqpLADYjYFkSUydFWX./Su3jvW', 'L', '089672231770', 1, 1),
-(22, 'Makmudin', 'makmudin', '$2y$10$zK5Ex7TgX1Q3kNAsYT8JOOFIWTR9lUSs8fKMPOZUzw2KsuuLqpoei', 'L', '089672231770', 3, 1);
+INSERT INTO `karyawan` (`id`, `nama`, `username`, `password`, `jenis_kelamin`, `foto_user`, `no_hp`, `role_id`, `is_active`) VALUES
+(7, 'Arif Super', 'arif', '$2y$10$oZU1M/v2RaVUf6PmaEH7r.qfnMgMu4zTZwTzjENGf04AAhqol0hyi', 'L', 'user.jpg', '081231232', 1, 1),
+(21, 'Nabil', 'nabil', '$2y$10$Z8xfwaH9OxhK4AHQRneY2eN9wJkwu.nfHEVYN2IqAvjCjfAdo6jLi', 'L', 'user.jpg', '089672231770', 2, 1),
+(22, 'Makmudin', 'makmudin', '$2y$10$zK5Ex7TgX1Q3kNAsYT8JOOFIWTR9lUSs8fKMPOZUzw2KsuuLqpoei', 'L', 'user.jpg', '089672231770', 3, 1),
+(23, 'Manager', 'manager', '$2y$10$vQL4KoIiLQlUbdpemnkiY.d0S36xmhL0kaih1xbcCrrGEA5Sya26m', 'L', 'user.jpg', '089672231770', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -134,13 +136,10 @@ CREATE TABLE `karyawan_access_menu` (
 --
 
 INSERT INTO `karyawan_access_menu` (`id`, `role_id`, `menu_id`) VALUES
-(6, 3, 2),
-(8, 3, 4),
-(9, 3, 5),
-(10, 3, 2),
+(8, 3, 3),
 (12, 1, 1),
-(13, 1, 11),
-(14, 1, 35);
+(13, 1, 4),
+(15, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -159,11 +158,9 @@ CREATE TABLE `karyawan_menu` (
 
 INSERT INTO `karyawan_menu` (`id`, `menu`) VALUES
 (1, 'Super Admin'),
-(3, 'Dapur'),
-(4, 'Kasir'),
-(6, 'Akuntan'),
-(9, 'User'),
-(11, 'Utility');
+(2, 'Manager'),
+(3, 'Kasir'),
+(4, 'Utility');
 
 -- --------------------------------------------------------
 
@@ -182,7 +179,7 @@ CREATE TABLE `karyawan_role` (
 
 INSERT INTO `karyawan_role` (`id`, `role`) VALUES
 (1, 'Super Admin'),
-(2, 'Admin'),
+(2, 'Manager'),
 (3, 'Kasir');
 
 -- --------------------------------------------------------
@@ -206,18 +203,22 @@ CREATE TABLE `karyawan_sub_menu` (
 
 INSERT INTO `karyawan_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active`) VALUES
 (1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 1),
-(2, 11, 'Managemen User', 'admin/manage_user', 'fas fa-fw fa-users', 1),
+(2, 4, 'Managemen User', 'admin/manage_user', 'fas fa-fw fa-users', 1),
 (3, 1, 'Supplier', 'admin/supplier', 'fas fa-cart-plus', 1),
 (4, 1, 'Obat', 'admin/obat', '\r\nfas fa-medkit', 1),
 (5, 1, 'Katalog Obat', 'admin/katalog_obat', ' fas fa-pills', 1),
-(6, 1, 'Penjualan', 'admin/penjualan', 'fas fa-cart-arrow-down', 1),
 (7, 1, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
 (8, 1, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1),
-(27, 3, 'Masakan', 'dapur', 'fas fa-fw fa-concierge-bell', 1),
-(28, 3, 'Riwayat Masakan', 'dapur/riwayat_masakan', 'fas fa-fw fa-history', 1),
-(40, 4, 'Dashboard', 'kasir', 'fas fa-fw fa-tachometer-alt\r\n', 1),
-(41, 4, 'Penjualan', 'kasir/penjualan', 'fas fa-shopping-cart', 1),
-(42, 4, 'Laporan Stok', 'kasir/laporanstok', 'fas fa-file-alt', 1);
+(40, 3, 'Dashboard', 'kasir', 'fas fa-fw fa-tachometer-alt\r\n', 1),
+(41, 3, 'Penjualan', 'kasir/penjualan', 'fas fa-shopping-cart', 1),
+(42, 3, 'Histori Penjualan', 'kasir/histori_penjualan', 'fas fa-history', 1),
+(43, 3, 'Laporan Stok', 'kasir/laporanstok', 'fas fa-file-alt', 1),
+(44, 2, 'Dashboard', 'manager', 'fas fa-fw fa-tachometer-alt', 1),
+(45, 2, 'Supplier', 'manager/supplier', 'fas fa-cart-plus', 1),
+(47, 2, 'Obat', 'manager/obat', 'fas fa-medkit', 1),
+(48, 2, 'Katalog Obat', 'manager/katalog_obat', 'fas fa-pills', 1),
+(49, 2, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
+(50, 2, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1);
 
 -- --------------------------------------------------------
 
@@ -435,19 +436,19 @@ ALTER TABLE `history_stok`
 -- AUTO_INCREMENT untuk tabel `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT untuk tabel `karyawan_access_menu`
 --
 ALTER TABLE `karyawan_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `karyawan_menu`
 --
 ALTER TABLE `karyawan_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `karyawan_role`
@@ -459,7 +460,7 @@ ALTER TABLE `karyawan_role`
 -- AUTO_INCREMENT untuk tabel `karyawan_sub_menu`
 --
 ALTER TABLE `karyawan_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat`

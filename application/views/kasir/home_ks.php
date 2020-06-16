@@ -5,8 +5,9 @@
                 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                     <div>
                         <h2 class="text-white pb-2 fw-bold"><b>Halo,
-                                <!-- <?php foreach ($profil as $p) : ?> <?= $p['nama']; ?> <?php endforeach; ?>!</b></h2> -->
-                                <h5 class="text-white op-7 mb-2">Ini kabar terbaru dari tokomu</h5>
+                                <?= $saya_karyawan['nama']; ?>!</b>
+                        </h2>
+                        <h5 class="text-white op-7 mb-2">Ini kabar terbaru dari tokomu</h5>
                     </div>
                 </div>
             </div>
@@ -19,7 +20,7 @@
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="flaticon-coins text-success"></i>
+                                        <i class="flaticon-user-2 text-success"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
@@ -51,16 +52,9 @@
                                                     $bulan = "Desember";
                                                 }
                                                 ?> -->
-                                        <p class="card-category">Pendapatan: <?= $bulan; ?></p>
+                                        <p class="card-category">Supplier</p>
                                         <h4 class="card-title">
-                                            <!-- <?php
-                                                    if ($pendapatan['pendapatan_kotor'] == null) {
-                                                        $pen = "0";
-                                                        echo $pen;
-                                                    } else {
-                                                        echo number_format($pendapatan['pendapatan_kotor']);
-                                                    }
-                                                    ?> -->
+                                            tes
                                         </h4>
                                     </div>
                                 </div>
@@ -74,18 +68,13 @@
                             <div class="row">
                                 <div class="col-5">
                                     <div class="icon-big text-center">
-                                        <i class="flaticon-cart-1"></i>
+                                        <i class="fas fa-medkit"></i>
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
-                                        <!-- <?php $i = 0;
-                                                foreach ($belumdiproses as $p) : ?>
-                                            <?php $i++; ?>
-                                        <?php endforeach;
-                                                $pesananbaru = $i; ?>
-                                        <p class="card-category">Pesanan Baru</p>
-                                        <h4 class="card-title"><?= $pesananbaru; ?></h4> -->
+                                        <p class="card-category">Obat</p>
+                                        18
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +93,7 @@
                                 <div class="col-7 col-stats">
                                     <div class="numbers">
                                         <p class="card-category">Terjual</p>
-                                        <!-- <h4 class="card-title"><?= $order['jmh']; ?></h4> -->
+                                        18
                                     </div>
                                 </div>
                             </div>
@@ -121,19 +110,94 @@
                                     </div>
                                 </div>
                                 <div class="col-7 col-stats">
+                                    <p class="card-category">Pengguna Aplikasi</p>
                                     <div class="numbers">
-                                        <!-- <?php $i = 0;
-                                                foreach ($produk_aktif as $p) : ?>
-                                            <?php $i++; ?>
-                                        <?php endforeach;
-                                                $aktifproduk = $i; ?>
-                                        <p class="card-category">Produk Aktif</p>
-                                        <h4 class="card-title">
-                                            <?= $aktifproduk; ?>
-                                        </h4> -->
+                                        9
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">Penjualan Obat</div>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+                                        <span class="btn-label">
+                                            <i class="fa fa-pencil"></i>
+                                        </span>
+                                        Export
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm">
+                                        <span class="btn-label">
+                                            <i class="fa fa-print"></i>
+                                        </span>
+                                        Print
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            isi
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">Stok Obat Minimum</div>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+                                        <span class="btn-label">
+                                            <i class="fa fa-pencil"></i>
+                                        </span>
+                                        Export
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm">
+                                        <span class="btn-label">
+                                            <i class="fa fa-print"></i>
+                                        </span>
+                                        Print
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            isi
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-head-row">
+                                <div class="card-title">5 Obat Terlaris</div>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+                                        <span class="btn-label">
+                                            <i class="fa fa-pencil"></i>
+                                        </span>
+                                        Export
+                                    </a>
+                                    <a href="#" class="btn btn-info btn-border btn-round btn-sm">
+                                        <span class="btn-label">
+                                            <i class="fa fa-print"></i>
+                                        </span>
+                                        Print
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            isi
                         </div>
                     </div>
                 </div>

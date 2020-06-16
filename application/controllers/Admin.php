@@ -8,7 +8,7 @@ class Admin extends CI_Controller
   {
     parent::__construct();
 
-    //cek_login();
+    // cek_login();
 
     $this->load->library('form_validation');
     $this->load->model('AdminModal');
@@ -44,7 +44,7 @@ class Admin extends CI_Controller
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['daftarKaryawan'] = $this->AdminModal->getAdmin();
     $data['active'] = $this->db->get('active')->result_array();
-    $data['status'] = $this->db->get('karyawan_role')->result_array();
+    $data['akses'] = $this->db->get('karyawan_role')->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
@@ -437,15 +437,14 @@ class Admin extends CI_Controller
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
 
     $data['detail'] = $this->AdminModal->getDetail($id);
-    $data['status'] = $this->db->get('karyawan_role')->result_array();
+    $data['akses'] = $this->db->get('karyawan_role')->result_array();
     $data['active'] = $this->db->get('active')->result_array();
 
     $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+    $this->form_validation->set_rules('username', 'Username', 'required|trim');
     $this->form_validation->set_rules('no_hp', 'No_hp', 'required|trim');
-    $this->form_validation->set_rules('password', 'Password', 'trim');
-    $this->form_validation->set_rules('password1', 'Password1', 'trim');
     $this->form_validation->set_rules('posisi', 'Posisi', 'required|trim');
-    $this->form_validation->set_rules('is_active', 'Is_active', 'required|trim');
+    $this->form_validation->set_rules('status', 'Status', 'required|trim');
 
 
     if ($this->form_validation->run() == false) {
@@ -456,57 +455,44 @@ class Admin extends CI_Controller
       $this->load->view('templates/quick_sidebar', $data);
       $this->load->view('templates/footer', $data);
     } else {
-
-      $q_role = $this->db->get_where('karyawan_role', ['role' => $this->input->post('posisi')])->row_array();
-      $q_active = $this->db->get_where('active', ['keterangan' => $this->input->post('is_active')])->row_array();
-
-      $pass_lama = $this->input->post('password');
-      $pass_lama1 = $data['detail']['password'];
-      $pass_baru = $this->input->post('password1');
-      if ($pass_lama) {
-        if (!$pass_baru) {
-          $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pasword Baru Harus di Isi !</div>');
-          redirect('admin/detail');
-        }
-        //klo masukin password lama (ganti pass)
-        if (password_verify($pass_lama, $pass_lama1)) {
-          $edit = [
-            'nama' => $this->input->post('nama'),
-            'no_hp' => $this->input->post('no_hp'),
-            'role_id' => $q_role['id'],
-            'is_active' => $q_active['id'],
-            'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT)
-          ];
-          $this->db->where('id', $id);
-          $this->db->update('karyawan', $edit);
-          $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Berhasil di Ubah !</div>');
-          redirect('admin/daftar_karyawan');
-        } else {
-          //klo pass ga sama dgn yg lama
-          $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Pasword Lama Salah !</div>');
-          redirect('admin/detail');
-        }
+      $pass = $this->input->post('pass');
+      $idus = $this->input->post('id');
+      if ($pass) {
+        $edit = [
+          'nama' => $this->input->post('nama'),
+          'username' => $this->input->post('username'),
+          'no_hp' => $this->input->post('no_hp'),
+          'role_id' => $this->input->post('posisi'),
+          'is_active' => $this->input->post('status'),
+          'password' => password_hash($pass, PASSWORD_DEFAULT)
+        ];
+        $this->db->where('id', $idus);
+        $this->db->update('karyawan', $edit);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Berhasil di Ubah !</div>');
+        redirect('admin/manage_user');
       } else {
         //klo ga masukin pass (ga ganti pass)
         $edit = [
           'nama' => $this->input->post('nama'),
+          'username' => $this->input->post('username'),
           'no_hp' => $this->input->post('no_hp'),
-          'role_id' => $q_role['id'],
-          'is_active' => $q_active['id'],
+          'role_id' => $this->input->post('posisi'),
+          'is_active' => $this->input->post('status'),
         ];
-        $this->db->where('id', $id);
+        $this->db->where('id', $idus);
         $this->db->update('karyawan', $edit);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Berhasil di Ubah !</div>');
-        redirect('admin/daftar_karyawan');
+        redirect('admin/manage_user');
       }
     }
   }
+
   public function tambah_user()
   {
     $data['title'] = 'Managemen User';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['active'] = $this->db->get('active')->result_array();
-    $data['status'] = $this->db->get('karyawan_role')->result_array();
+    $data['akses'] = $this->db->get('karyawan_role')->result_array();
 
     $this->form_validation->set_rules('namauser', 'Nama', 'required|trim');
     $this->form_validation->set_rules(

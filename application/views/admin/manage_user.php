@@ -60,10 +60,10 @@
                                                 <td><?= $dk['no_hp']; ?></td>
                                                 <td><?= $dk['role']; ?></td>
                                                 <td style="color: <?= $dk['warna']; ?>"><?= $dk['keterangan']; ?></td>
-                                                <td align="center"><a href="<?= base_url('admin/beforeDetail'); ?>/<?= $dk['id']; ?>" class="btn btn-primary btn-circle btn-sm">
+                                                <td align="center"><a href="<?= base_url('admin/beforeDetail'); ?>/<?= $dk['id']; ?>" class="btn btn-info btn-circle btn-sm">
                                                         <i class="fas fa-info-circle"></i>
                                                     </a>
-                                                    <a href="<?= base_url('admin/hapus_karyawan'); ?>/<?= $dk['id']; ?>" class="btn btn-danger btn-circle btn-sm ml-3" onclick="return confirm('User akan dihapus?');">
+                                                    <a href="<?= base_url('admin/hapus_karyawan'); ?>/<?= $dk['id']; ?>" class="btn btn-danger btn-circle btn-sm" onclick="return confirm('User akan dihapus?');">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </td>
@@ -71,7 +71,6 @@
                                             </tr>
                                         <?php $no += 1;
                                         endforeach; ?>
-
                                     </tbody>
                                 </table>
                             </div>

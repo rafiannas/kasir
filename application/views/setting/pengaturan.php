@@ -13,19 +13,13 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Kelola Mitra</a>
+                        <a href="#">Profil</a>
                     </li>
                     <li class="separator">
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= base_url('superadmin/list_toko') ?>">Daftar Toko</a>
-                    </li>
-                    <li class="separator">
-                        <i class="flaticon-right-arrow"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#"><strong>Info Toko</strong></a>
+                        <a href="#"><strong><?= $title ?></strong></a>
                     </li>
                 </ul>
             </div>
@@ -35,13 +29,13 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Edit User</h4>
+                                <h4 class="card-title">Setting Profil</h4>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="tab-content" id="pills-without-border-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home-nobd" role="tabpanel" aria-labelledby="pills-home-tab-nobd">
-                                    <form method="post" action="<?= base_url('admin/detail_user'); ?>">
+                                    <form method="post" action="<?= base_url('setting/update'); ?>">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group form-group-default">
@@ -69,49 +63,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group form-group-default">
-                                                    <label class="mb-2">Hak Akses</label>
-                                                    <div class="select2-input">
-                                                        <select id="basic2" name="posisi" class="form-control" required>
-                                                            <option value="">&nbsp;</option>
-                                                            <optgroup label="Hak Akses">
-                                                                <?php foreach ($akses as $st) : ?>
-                                                                    <option value="<?= $st['id']; ?>" <?php if ($detail['role_id'] == $st['id']) {
-                                                                                                            echo "selected";
-                                                                                                        } ?>>
-                                                                        <?= $st['role']; ?>
-                                                                    </option>
-                                                                <?php endforeach; ?>
-                                                            </optgroup>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group form-group-default">
-                                                    <label class="mb-2">Status</label>
-                                                    <div class="select2-input">
-                                                        <select id="basic" name="status" class="form-control" required>
-                                                            <option value="">&nbsp;</option>
-                                                            <optgroup label="Status User">
-                                                                <?php foreach ($active as $ac) : ?>
-                                                                    <option value="<?= $ac['id']; ?>" <?php if ($detail['is_active'] == $ac['id']) {
-                                                                                                            echo "selected";
-                                                                                                        } ?>><?= $ac['keterangan']; ?></option>
-                                                                <?php endforeach; ?>
-                                                            </optgroup>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <input type="hidden" class="form-control" name="id" value="<?= $detail['id']; ?>">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <button class="btn btn-primary" type="submit">Simpan </button>
-                                                <a href="<?= base_url('admin/manage_user') ?>" class="btn btn-danger">Batal</a>
+                                                <a href="<?= base_url('setting/batal/' . $detail['id']) ?>" class="btn btn-danger">Batal</a>
                                             </div>
                                         </div>
                                     </form>
