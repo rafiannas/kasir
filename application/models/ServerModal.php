@@ -38,7 +38,7 @@ class ServerModal extends CI_Model
 
     public function cekAwal($id)
     {
-        $q = "SELECT * FROM pembelian
+        $q = "SELECT * FROM penjualan
          WHERE id_status = 1
         AND id_karyawan = $id
         ";
@@ -47,23 +47,25 @@ class ServerModal extends CI_Model
 
     public function cekBarang($obat)
     {
-        $q = "SELECT * FROM detail_pembelian
+        $q = "SELECT * FROM detail_penjualan
                 WHERE obat = '$obat'
         ";
         return $this->db->query($q)->row_array();
     }
 
-    public function listPembelian($id)
+    public function listpenjualan($id)
     {
-        $q = "SELECT * FROM detail_pembelian
-            WHERE id_pembelian = $id
+        $q = "SELECT daftar_obat.nama_obat, detail_penjualan.*
+        FROM detail_penjualan, daftar_obat
+        WHERE detail_penjualan.obat = daftar_obat.id 
+        AND detail_penjualan.id_penjualan = $id
         ";
         return $this->db->query($q)->result_array();
     }
 
     public function Checkout($id)
     {
-        $q = "SELECT * FROM pembelian
+        $q = "SELECT * FROM penjualan
             WHERE id_karyawan = $id
             AND id_status
         ";
@@ -73,8 +75,8 @@ class ServerModal extends CI_Model
 
     public function listCheckout($id)
     {
-        $q = "SELECT * FROM detail_pembelian
-            WHERE id_pembelian = $id
+        $q = "SELECT * FROM detail_penjualan
+            WHERE id_penjualan = $id
         ";
         return $this->db->query($q)->result_array();
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Jun 2020 pada 05.43
+-- Waktu pembuatan: 17 Jun 2020 pada 19.55
 -- Versi server: 10.4.8-MariaDB
 -- Versi PHP: 7.1.33
 
@@ -50,7 +50,6 @@ INSERT INTO `active` (`id`, `keterangan`, `warna`) VALUES
 
 CREATE TABLE `daftar_obat` (
   `id` int(11) NOT NULL,
-  `id_satuan` int(11) NOT NULL,
   `nama_obat` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -58,10 +57,8 @@ CREATE TABLE `daftar_obat` (
 -- Dumping data untuk tabel `daftar_obat`
 --
 
-INSERT INTO `daftar_obat` (`id`, `id_satuan`, `nama_obat`) VALUES
-(1, 6, 'Panadol'),
-(2, 7, 'Tolak Angin'),
-(3, 8, 'Panadol');
+INSERT INTO `daftar_obat` (`id`, `nama_obat`) VALUES
+(8871, 'Antangin JRG');
 
 -- --------------------------------------------------------
 
@@ -114,7 +111,7 @@ CREATE TABLE `karyawan` (
 --
 
 INSERT INTO `karyawan` (`id`, `nama`, `username`, `password`, `jenis_kelamin`, `foto_user`, `no_hp`, `role_id`, `is_active`) VALUES
-(7, 'Arif Super', 'arif', '$2y$10$oZU1M/v2RaVUf6PmaEH7r.qfnMgMu4zTZwTzjENGf04AAhqol0hyi', 'L', 'user.jpg', '081231232', 1, 1),
+(7, 'Arif Suprianto', 'arif', '$2y$10$oZU1M/v2RaVUf6PmaEH7r.qfnMgMu4zTZwTzjENGf04AAhqol0hyi', 'L', 'user.jpg', '081231232', 1, 1),
 (21, 'Nabil', 'nabil', '$2y$10$Z8xfwaH9OxhK4AHQRneY2eN9wJkwu.nfHEVYN2IqAvjCjfAdo6jLi', 'L', 'user.jpg', '089672231770', 2, 1),
 (22, 'Makmudin', 'makmudin', '$2y$10$zK5Ex7TgX1Q3kNAsYT8JOOFIWTR9lUSs8fKMPOZUzw2KsuuLqpoei', 'L', 'user.jpg', '089672231770', 3, 1),
 (23, 'Manager', 'manager', '$2y$10$vQL4KoIiLQlUbdpemnkiY.d0S36xmhL0kaih1xbcCrrGEA5Sya26m', 'L', 'user.jpg', '089672231770', 2, 1);
@@ -205,10 +202,12 @@ INSERT INTO `karyawan_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_ac
 (1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 1),
 (2, 4, 'Managemen User', 'admin/manage_user', 'fas fa-fw fa-users', 1),
 (3, 1, 'Supplier', 'admin/supplier', 'fas fa-cart-plus', 1),
-(4, 1, 'Obat', 'admin/obat', '\r\nfas fa-medkit', 1),
-(5, 1, 'Katalog Obat', 'admin/katalog_obat', ' fas fa-pills', 1),
-(7, 1, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
+(4, 1, 'Katalog Obat', 'admin/katalog_obat', ' fas fa-pills', 1),
+(5, 1, 'Pembelian Obat', 'admin/obat', '\r\nfas fa-medkit', 1),
+(6, 1, 'Stok Obat', 'admin/stok', 'fas fa-boxes', 1),
+(7, 1, 'Penjualan', 'admin/tambahpenjualan', 'fas fa-shopping-cart', 1),
 (8, 1, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1),
+(9, 1, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
 (40, 3, 'Dashboard', 'kasir', 'fas fa-fw fa-tachometer-alt\r\n', 1),
 (41, 3, 'Penjualan', 'kasir/penjualan', 'fas fa-shopping-cart', 1),
 (42, 3, 'Histori Penjualan', 'kasir/histori_penjualan', 'fas fa-history', 1),
@@ -218,7 +217,7 @@ INSERT INTO `karyawan_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_ac
 (47, 2, 'Obat', 'manager/obat', 'fas fa-medkit', 1),
 (48, 2, 'Katalog Obat', 'manager/katalog_obat', 'fas fa-pills', 1),
 (49, 2, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
-(50, 2, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1);
+(51, 2, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1);
 
 -- --------------------------------------------------------
 
@@ -230,18 +229,13 @@ CREATE TABLE `obat` (
   `id` int(11) NOT NULL,
   `id_daftar_obat` int(11) NOT NULL,
   `id_supplier` int(11) NOT NULL,
+  `id_satuan` int(11) NOT NULL,
+  `id_tipe` int(11) NOT NULL,
+  `netto` int(11) NOT NULL,
   `harga_beli` int(11) NOT NULL,
   `jumlah_obat` int(11) NOT NULL,
   `tgl_input` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `obat`
---
-
-INSERT INTO `obat` (`id`, `id_daftar_obat`, `id_supplier`, `harga_beli`, `jumlah_obat`, `tgl_input`) VALUES
-(4, 3, 2, 2000, 9, '2020-06-15 20:02:21'),
-(5, 2, 2, 1500, 90, '2020-06-15 20:30:19');
 
 -- --------------------------------------------------------
 
@@ -251,7 +245,7 @@ INSERT INTO `obat` (`id`, `id_daftar_obat`, `id_supplier`, `harga_beli`, `jumlah
 
 CREATE TABLE `obat_satuan` (
   `id` int(11) NOT NULL,
-  `satuan` varchar(60) NOT NULL
+  `satuan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -259,10 +253,30 @@ CREATE TABLE `obat_satuan` (
 --
 
 INSERT INTO `obat_satuan` (`id`, `satuan`) VALUES
+(1, 'mg'),
+(2, 'ml');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `obat_tipe`
+--
+
+CREATE TABLE `obat_tipe` (
+  `id` int(11) NOT NULL,
+  `tipe` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `obat_tipe`
+--
+
+INSERT INTO `obat_tipe` (`id`, `tipe`) VALUES
 (6, 'Tablet'),
 (7, 'Botol'),
 (8, 'Box'),
-(9, 'Sachet');
+(9, 'Sachet'),
+(10, 'Lusin');
 
 -- --------------------------------------------------------
 
@@ -283,6 +297,13 @@ CREATE TABLE `penjualan` (
   `catatan` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `penjualan`
+--
+
+INSERT INTO `penjualan` (`id`, `tgl`, `ppn`, `total_harga`, `total_bayar`, `jumlah_beli`, `kembalian`, `id_karyawan`, `id_status`, `catatan`) VALUES
+(14, '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 7, 1, '');
+
 -- --------------------------------------------------------
 
 --
@@ -292,7 +313,12 @@ CREATE TABLE `penjualan` (
 CREATE TABLE `stok` (
   `id` int(11) NOT NULL,
   `id_daftar_obat` int(11) NOT NULL,
-  `harga_jualan` int(11) NOT NULL
+  `id_tipe` int(11) NOT NULL,
+  `id_satuan` int(11) NOT NULL,
+  `id_supplier` int(11) NOT NULL,
+  `netto` int(11) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `harga_jualan` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -387,6 +413,12 @@ ALTER TABLE `obat_satuan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `obat_tipe`
+--
+ALTER TABLE `obat_tipe`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
@@ -418,19 +450,19 @@ ALTER TABLE `active`
 -- AUTO_INCREMENT untuk tabel `daftar_obat`
 --
 ALTER TABLE `daftar_obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8872;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_stok`
 --
 ALTER TABLE `history_stok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `karyawan`
@@ -460,31 +492,37 @@ ALTER TABLE `karyawan_role`
 -- AUTO_INCREMENT untuk tabel `karyawan_sub_menu`
 --
 ALTER TABLE `karyawan_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat_satuan`
 --
 ALTER TABLE `obat_satuan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `obat_tipe`
+--
+ALTER TABLE `obat_tipe`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `stok`
 --
 ALTER TABLE `stok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `supplier`

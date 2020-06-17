@@ -30,6 +30,10 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"><?= $title ?></h4>
+                                <a class="btn btn-primary btn-round ml-auto" href="<?= base_url('admin/tambahpenjualan') ?>">
+                                    <i class="fa fa-plus"></i>
+                                    Tambah Penjualan
+                                </a>
                             </div>
                         </div>
                         <div class="card-body">

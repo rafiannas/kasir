@@ -5,4 +5,10 @@ $(document).ready(function () {
     $('#basic2').select2({
         theme: "bootstrap"
     });
+    $('#basic3').select2({
+        theme: "bootstrap"
+    });
+    $('#basic4').select2({
+        theme: "bootstrap"
+    });
 });

@@ -28,7 +28,6 @@ $(function () {
             dataType: 'json',
             success: function (data) {
                 $('#namaobatku').val(data.nama_obat);
-                $('#basic').val(data.id_satuan);
                 $('#id').val(data.id);
             }
         });
@@ -44,6 +43,42 @@ $(function () {
             method: 'post',
             dataType: 'json',
             success: function (data) {
+                $('#satuan').val(data.satuan);
+                $('#id').val(data.id);
+            }
+        });
+    });
+
+    $('.editipe').on('click', function () {
+        $('.modal-footer button[type=submit]').html('Update');
+        $('.modal-content form').attr('action', 'http://localhost/kasir/admin/edit_tipe');
+        const id = $(this).data('id');
+        $.ajax({
+            url: 'http://localhost/kasir/admin/get_tipe',
+            data: { id: id },
+            method: 'post',
+            dataType: 'json',
+            success: function (data) {
+                $('#tpobat').val(data.tipe);
+                $('#id').val(data.id);
+            }
+        });
+    });
+
+    $('.editharga').on('click', function () {
+        $('.modal-footer button[type=submit]').html('Update');
+        $('.modal-content form').attr('action', 'http://localhost/kasir/admin/update_harga');
+        const id = $(this).data('id');
+        $.ajax({
+            url: 'http://localhost/kasir/admin/geteditharga',
+            data: { id: id },
+            method: 'post',
+            dataType: 'json',
+            success: function (data) {
+                $('#hargajual').val(data.harga_jualan);
+                $('#stok').val(data.stok);
+                $('#tipe').val(data.tipe);
+                $('#namaobat').val(data.nama_obat);
                 $('#satuan').val(data.satuan);
                 $('#id').val(data.id);
             }

@@ -13,6 +13,7 @@ class Admin extends CI_Controller
     $this->load->library('form_validation');
     $this->load->model('AdminModal');
     $this->load->model('ServerModal');
+    $this->load->library('Excel'); //load librari excel
     //cek_login();
     // $this->load->model('chart_model');
   }
@@ -56,10 +57,11 @@ class Admin extends CI_Controller
 
   public function obat()
   {
-    $data['title'] = 'Obat';
+    $data['title'] = 'Pembelian Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['obat'] = $this->AdminModal->getObat();
-    $data['satuanobat'] = $this->AdminModal->getSatuan();
+    $data['katalog'] = $this->AdminModal->getKatalog();
+
 
     $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
     $this->form_validation->set_rules('satuan', 'Satuan Obat', 'required|trim');
@@ -83,56 +85,181 @@ class Admin extends CI_Controller
     }
   }
 
+  public function stok()
+  {
+    $data['title'] = 'Stok Obat';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['stok_obat'] = $this->AdminModal->getStok();
+
+    $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
+    $this->form_validation->set_rules('satuan', 'Satuan Obat', 'required|trim');
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/stok', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $nama = $this->input->post('namaobat');
+      $satuan = $this->input->post('satuan');
+      $tambah = [
+        'nama_obat' => $nama,
+        'id_satuan' => $satuan,
+      ];
+      $this->db->insert('stok', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $nama . '</b> </div>');
+      redirect('admin/stok');
+    }
+  }
+
+  public function histori_perubahan()
+  {
+    $data['title'] = 'Stok Obat';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['obat'] = $this->AdminModal->getObat();
+
+    $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/histori_perubahan', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $nama = $this->input->post('namaobat');
+      $tambah = [
+        'nama_obat' => $nama,
+      ];
+      $this->db->insert('daftar_obat', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $nama . '</b> </div>');
+      redirect('admin/katalog_obat');
+    }
+  }
+
   public function katalog_obat()
   {
     $data['title'] = 'Katalog Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['obat'] = $this->AdminModal->getObat();
-    $data['katalog'] = $this->AdminModal->getKatalog();
 
-    $this->load->view('templates/header', $data);
-    $this->load->view('templates/navbar', $data);
-    $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/katalog', $data);
-    $this->load->view('templates/quick_sidebar', $data);
-    $this->load->view('templates/footer', $data);
+    $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/katalog_obat', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $nama = $this->input->post('namaobat');
+      $tambah = [
+        'nama_obat' => $nama,
+      ];
+      $this->db->insert('daftar_obat', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $nama . '</b> </div>');
+      redirect('admin/katalog_obat');
+    }
   }
 
-  public function tambah_katalog()
+  public function tambah_obat()
   {
-    $data['title'] = 'Katalog Obat';
+    $data['title'] = 'Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['satuanobat'] = $this->AdminModal->getSatuan();
+    $data['tipeobat'] = $this->AdminModal->getTipe();
     $data['supplier'] = $this->AdminModal->getSupplier();
     $data['obat'] = $this->AdminModal->getObat();
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/tambah_katalog', $data);
+    $this->load->view('admin/tambah_obat', $data);
     $this->load->view('templates/quick_sidebar', $data);
     $this->load->view('templates/footer', $data);
   }
 
 
-  public function addkatalog()
+  public function add_obat()
   {
     date_default_timezone_set('Asia/Jakarta');
+    $idobat = $this->input->post('obat');
+    $supplier = $this->input->post('supplier');
+    $tipe = $this->input->post('tipe');
+    $satuan = $this->input->post('satuan');
+    $netto = $this->input->post('netto');
     $tambah = [
-      'id_daftar_obat' => $this->input->post('obat'),
-      'id_supplier' => $this->input->post('supplier'),
+      'id_daftar_obat' =>  $idobat,
+      'id_supplier' => $supplier,
       'harga_beli' => $this->input->post('hargabeli'),
+      'id_tipe' => $tipe,
+      'id_satuan' => $satuan,
       'jumlah_obat' => $this->input->post('stok'),
+      'netto' => $netto,
       'tgl_input' => date('Y-m-d H:i:s'),
     ];
     $this->db->insert('obat', $tambah);
-    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan katalog </div>');
-    redirect('admin/katalog_obat');
+    $query = "SELECT * FROM stok 
+    where id_daftar_obat = $idobat 
+    and id_supplier = $supplier
+    and id_tipe = $tipe
+    and id_satuan = $satuan
+    and netto = $netto";
+
+    $check = $this->db->query($query)->row_array();
+    if ($check) {
+      $update = $check['stok'] + $this->input->post('stok');
+      $updata = [
+        'stok' => $update,
+        'harga_jualan' => $this->input->post('harga_jualan'),
+      ];
+      $this->db->where('id_daftar_obat', $idobat);
+      $this->db->update('stok', $updata);
+    } else {
+      $tambah2 = [
+        'id_daftar_obat' => $idobat,
+        'id_supplier' => $supplier,
+        'id_tipe' => $tipe,
+        'id_satuan' => $satuan,
+        'stok' => $this->input->post('stok'),
+        'netto' => $netto,
+        'harga_jualan' => $this->input->post('harga_jualan'),
+      ];
+      $this->db->insert('stok', $tambah2);
+    }
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat!</div>');
+    redirect('admin/obat');
   }
 
 
-  public function datasatuan()
+  public function obat_tipe()
   {
-    $data['title'] = 'Obat';
+    $data['title'] = 'Katalog Obat';
+    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    $data['tipeobat'] = $this->AdminModal->getTipe();
+
+    $this->form_validation->set_rules('tipe_obat', 'Tipe Obat', 'required|trim');
+    if ($this->form_validation->run() == false) {
+      $this->load->view('templates/header', $data);
+      $this->load->view('templates/navbar', $data);
+      $this->load->view('templates/sidebar', $data);
+      $this->load->view('admin/obat_tipe', $data);
+      $this->load->view('templates/quick_sidebar', $data);
+      $this->load->view('templates/footer', $data);
+    } else {
+      $nama = $this->input->post('tipe_obat');
+      $tambah = [
+        'tipe' => $nama,
+      ];
+      $this->db->insert('obat_tipe', $tambah);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan tipe obat <b>' . $nama . '</b> </div>');
+      redirect('admin/obat_tipe');
+    }
+  }
+
+  public function obat_satuan()
+  {
+    $data['title'] = 'Katalog Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['obatsatuan'] = $this->AdminModal->getSatuan();
 
@@ -141,7 +268,7 @@ class Admin extends CI_Controller
       $this->load->view('templates/header', $data);
       $this->load->view('templates/navbar', $data);
       $this->load->view('templates/sidebar', $data);
-      $this->load->view('admin/data_satuan', $data);
+      $this->load->view('admin/obat_satuan', $data);
       $this->load->view('templates/quick_sidebar', $data);
       $this->load->view('templates/footer', $data);
     } else {
@@ -151,7 +278,7 @@ class Admin extends CI_Controller
       ];
       $this->db->insert('obat_satuan', $tambah);
       $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan satuan <b>' . $nama . '</b> </div>');
-      redirect('admin/datasatuan');
+      redirect('admin/obat_Satuan');
     }
   }
 
@@ -197,12 +324,12 @@ class Admin extends CI_Controller
     $this->load->view('templates/footer', $data);
   }
 
-  public function tambahpembelian()
+  public function tambahpenjualan()
   {
-    $data['title'] = 'Pembelian';
+    $data['title'] = 'Penjualan';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
     $data['supplier'] = $this->AdminModal->getSupplier();
-    $data['dataobat'] = $this->AdminModal->getObat();
+    $data['dataobat'] = $this->AdminModal->getObatStok();
 
     $cek_awal = $this->ServerModal->cekAwal($this->session->userdata('id_karyawan'));
     if (!$cek_awal) {
@@ -210,61 +337,57 @@ class Admin extends CI_Controller
         'id_status' => 1,
         'id_karyawan' => $this->session->userdata('id_karyawan')
       ];
-      $this->db->insert('pembelian', $isi);
-      $id_pembelian = $this->db->insert_id();
+      $this->db->insert('penjualan', $isi);
+      $id_penjualan = $this->db->insert_id();
     } else {
-      $id_pembelian = $cek_awal['id'];
+      $id_penjualan = $cek_awal['id'];
     }
 
-    $data['rincian_pembelian'] = $this->ServerModal->listPembelian($id_pembelian);
+    $data['rincian_penjualan'] = $this->ServerModal->listpenjualan($id_penjualan);
 
     $this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
+    $this->form_validation->set_rules('obat', 'Obat', 'trim');
 
     if ($this->form_validation->run() == false) {
       $this->load->view('templates/header', $data);
       $this->load->view('templates/navbar', $data);
       $this->load->view('templates/sidebar', $data);
-      $this->load->view('admin/tambah_pembelian', $data);
+      $this->load->view('admin/tambah_penjualan', $data);
       $this->load->view('templates/quick_sidebar', $data);
       $this->load->view('templates/footer', $data);
     } else {
       $obat = $this->input->post('obat');
-
       $cek_barang = $this->ServerModal->cekBarang($obat);
       if ($cek_barang) {
         $upd = [
           'jumlah' => $this->input->post('jumlah') + $cek_barang['jumlah'],
-          'satuan' => $this->input->post('satuan'),
           'harga_per_obat' => ($this->input->post('jumlah') * $this->input->post('harga_beli')) + $cek_barang['harga_per_obat']
         ];
-
         $this->db->where('id', $cek_barang['id']);
-        $this->db->update('detail_pembelian', $upd);
+        $this->db->update('detail_penjualan', $upd);
         $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
-        redirect('admin/tambahpembelian');
+        redirect('admin/tambahpenjualan');
       } else {
         $inp = [
-          'id_pembelian' => $id_pembelian,
+          'id_penjualan' => $id_penjualan,
           'obat' => $obat,
-          'harga' => $this->input->post('harga_beli'),
           'jumlah' => $this->input->post('jumlah'),
-          'satuan' => $this->input->post('satuan'),
           'harga_per_obat' => $this->input->post('jumlah') * $this->input->post('harga_beli')
         ];
-        $this->db->insert('detail_pembelian', $inp);
+        $this->db->insert('detail_penjualan', $inp);
         $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
-        redirect('admin/tambahpembelian');
+        redirect('admin/tambahpenjualan');
       }
     }
   }
 
   public function checkout()
   {
-    $data['title'] = 'Pembelian';
+    $data['title'] = 'penjualan';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
 
-    $pembelian = $this->ServerModal->Checkout($this->session->userdata('id_karyawan'));
-    $data['rincian_pembelian'] = $this->ServerModal->listCheckout($pembelian['id']);
+    $penjualan = $this->ServerModal->Checkout($this->session->userdata('id_karyawan'));
+    $data['rincian_penjualan'] = $this->ServerModal->listCheckout($penjualan['id']);
     $this->load->view('templates/header', $data);
     $this->load->view('templates/navbar', $data);
     $this->load->view('templates/sidebar', $data);
@@ -378,6 +501,41 @@ class Admin extends CI_Controller
     redirect('admin/supplier');
   }
 
+  public function update_harga()
+  {
+    $input_id = $_POST['id'];
+    // $input_stok = $_POST['stok'];
+    // $input_nomor = $_POST['tipe'];
+    $input_nama = $_POST['namaobat'];
+    $input_harga = $_POST['hargajual'];
+    $query = "UPDATE `stok` SET `harga_jualan` = '$input_harga' WHERE `id` ='$input_id' ";
+    $this->db->query($query);
+
+    $data['stok'] = $this->db->get_where('stok', ['id' => $input_id])->row_array();
+    $hargajual =  $data['stok']['harga_jualan'];
+
+    if ($hargajual >= $input_harga or $hargajual < $input_harga) {
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Harga jual <b>' . $input_nama . '</b> berhasil di updated!</div>');
+      redirect('admin/stok');
+    } else {
+      date_default_timezone_set('Asia/Jakarta');
+      $data = [
+        'id_stok' => $input_id,
+        'id_karyawan' =>   $this->session->userdata('id_karyawan'),
+        'tgl_ubah' => date('Y-m-d H:i:s'),
+      ];
+      $this->db->insert('history_stok', $data);
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Harga jual <b>' . $input_nama . '</b> berhasil di updated!</div>');
+      redirect('admin/stok');
+    }
+  }
+
+  public function geteditharga()
+  {
+    $this->load->model('AdminModal', 'stok');
+    echo json_encode($this->stok->getStokById($_POST['id']));
+  }
+
   public function geteditobat()
   {
     $this->load->model('AdminModal', 'daftar_obat');
@@ -388,11 +546,10 @@ class Admin extends CI_Controller
   {
     $input_id = $_POST['id'];
     $input_namaobat = $_POST['namaobatku'];
-    $input_satuan = $_POST['basic'];
-    $query = "UPDATE `daftar_obat` SET `nama_obat` = '$input_namaobat', `id_satuan` = '$input_satuan' WHERE `id` ='$input_id' ";
+    $query = "UPDATE `daftar_obat` SET `nama_obat` = '$input_namaobat' WHERE `id` ='$input_id' ";
     $this->db->query($query);
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Obat berhasil di updated!</div>');
-    redirect('admin/obat');
+    redirect('admin/katalog_obat');
   }
 
   public function geteditsatuan()
@@ -408,7 +565,23 @@ class Admin extends CI_Controller
     $query = "UPDATE `obat_satuan` SET `satuan` = '$input_satuan' WHERE `id` ='$input_id' ";
     $this->db->query($query);
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Satuan obat berhasil di updated!</div>');
-    redirect('admin/datasatuan');
+    redirect('admin/obat_satuan');
+  }
+
+  public function get_tipe()
+  {
+    $this->load->model('AdminModal', 'obat_tipe');
+    echo json_encode($this->obat_tipe->getTipeById($_POST['id']));
+  }
+
+  public function edit_tipe()
+  {
+    $input_id = $_POST['id'];
+    $input_tipe = $_POST['tpobat'];
+    $query = "UPDATE `obat_tipe` SET `tipe` = '$input_tipe' WHERE `id` ='$input_id' ";
+    $this->db->query($query);
+    $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Tipe obat berhasil di updated!</div>');
+    redirect('admin/obat_tipe');
   }
 
   public function tambah_supplier()
@@ -702,10 +875,10 @@ class Admin extends CI_Controller
   public function hapus_barang($id)
   {
     $this->db->where('id', $id);
-    $this->db->delete('detail_pembelian');
+    $this->db->delete('detail_pejualan');
 
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success tutup" role="alert">Berhasil Menghapus obat ! </div>');
-    redirect('admin/tambahpembelian');
+    redirect('admin/tambahpenjualan');
   }
 
   public function hapus_karyawan($id)
@@ -781,5 +954,54 @@ class Admin extends CI_Controller
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menambahkan menu !</div>');
       redirect('admin/per_kategori');
     }
+  }
+  public function import_obat()
+  {
+    $config['upload_path'] = realpath('assets/import_obat/');
+    $config['allowed_types'] = 'xlsx|xls|csv';
+    $config['max_size'] = '10000';
+    $config['encrypt_name'] = true;
+
+    $this->load->library('upload', $config);
+
+    if (!$this->upload->do_upload()) {
+
+      //upload gagal
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-danger"><b>PROSES IMPORT GAGAL!</b> ' . $this->upload->display_errors() . '</div>');
+      //redirect halaman
+      redirect('admin/katalog_obat');
+    } else {
+
+      $data_upload = $this->upload->data();
+
+      $excelreader     = new PHPExcel_Reader_Excel2007();
+      $loadexcel         = $excelreader->load('assets/import_obat/' . $data_upload['file_name']); // Load file yang telah diupload ke folder excel
+      $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true, true);
+
+      $data = array();
+
+      $numrow = 1;
+      foreach ($sheet as $row) {
+        if ($numrow > 2) {
+          array_push($data, array(
+            'nama_obat' => $row['B'],
+          ));
+        }
+        $numrow++;
+      }
+      $this->db->insert_batch('daftar_obat', $data);
+      //delete file from server
+      unlink(realpath('assets/import_obat/' . $data_upload['file_name']));
+
+      //upload success
+      $this->session->set_flashdata('message', '<div class="tutup alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data obat berhasil diimport!</div>');
+      //redirect halaman
+      redirect('admin/katalog_obat');
+    }
+  }
+
+  public function download_format()
+  {
+    force_download('assets/master_file/Format_Import_Obat.png', NULL);
   }
 }

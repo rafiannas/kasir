@@ -30,47 +30,81 @@ class AdminModal extends CI_Model
 
     public function getSatuanById($id)
     {
-        $query = "SELECT * FROM `obat_satuan` WHERE `id` = $id";
+        $query = "SELECT obat_satuan.* 
+        FROM `obat_satuan` WHERE `id` = $id";
         return $this->db->query($query)->row_array();
+    }
+
+    public function getTipeById($id)
+    {
+        $query = "SELECT * 
+        FROM `obat_tipe` WHERE `id` = $id";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function getTipe()
+    {
+        return $this->db->query("SELECT *
+        FROM obat_tipe
+        ORDER BY tipe ASC")->result_array();
     }
 
     public function getObatById($id)
     {
-        $query = "SELECT daftar_obat.*, obat_satuan.satuan
-        FROM daftar_obat, obat_satuan
-        where daftar_obat.id_satuan = obat_satuan.id
-        AND daftar_obat.id = $id
-        ORDER BY nama_obat ASC ";
+        $query = "SELECT daftar_obat.*
+        FROM daftar_obat
+        where daftar_obat.id = $id";
         return $this->db->query($query)->row_array();
     }
 
     public function getObat()
     {
-        return $this->db->query("SELECT daftar_obat.*, obat_satuan.satuan
-        FROM daftar_obat, obat_satuan
-        where daftar_obat.id_satuan = obat_satuan.id
+        return $this->db->query("SELECT daftar_obat.*
+        FROM daftar_obat
+        ORDER BY nama_obat ASC")->result_array();
+    }
+
+    public function getObatStok()
+    {
+        return $this->db->query("SELECT stok.*, daftar_obat.nama_obat, obat_satuan.satuan, obat_tipe.tipe
+        FROM stok, daftar_obat, obat_satuan, obat_tipe
+        where stok.id_daftar_obat = daftar_obat.id
+        and obat_satuan.id = stok.id_satuan
+        and obat_tipe.id = stok.id_tipe
         ORDER BY nama_obat ASC")->result_array();
     }
 
     public function getKatalog()
     {
-        return $this->db->query("SELECT daftar_obat.*, obat_satuan.satuan, obat.*, supplier.nama_supplier
-        FROM daftar_obat, obat_satuan, obat, supplier
-        where daftar_obat.id_satuan = obat_satuan.id
-        AND obat.id_daftar_obat = daftar_obat.id
+        return $this->db->query("SELECT daftar_obat.*, obat.*, supplier.nama_supplier, obat_tipe.tipe, obat_satuan.satuan
+        FROM daftar_obat, obat_tipe, obat, supplier, obat_satuan
+        WHERE obat.id_daftar_obat = daftar_obat.id
         AND obat.id_supplier = supplier.id
+        AND obat.id_tipe = obat_tipe.id
+        AND obat.id_satuan = obat_satuan.id
         ORDER BY nama_obat ASC")->result_array();
     }
 
-    // public function getKeyword($title)
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('obat');
-    //     $this->db->like('nama_obat', $title, 'both');
-    //     $this->db->order_by('nama_obat', 'asc');
-    //     $this->db->limit(10);
-    //     return $this->db->get('obat')->result();
-    // }
+    public function getStok()
+    {
+        return $this->db->query("SELECT  stok.*, daftar_obat.nama_obat, obat_satuan.satuan, obat_tipe.tipe
+        FROM stok, daftar_obat, obat_satuan, obat_tipe
+        WHERE stok.id_daftar_obat = daftar_obat.id
+        AND obat_satuan.id = stok.id_satuan
+        AND obat_tipe.id = stok.id_tipe
+        ORDER BY nama_obat ASC")->result_array();
+    }
+
+    public function getStokById($id)
+    {
+        return $this->db->query("SELECT  stok.*, daftar_obat.nama_obat, obat_satuan.satuan, obat_tipe.tipe
+        FROM stok, daftar_obat, obat_satuan, obat_tipe
+        WHERE stok.id_daftar_obat = daftar_obat.id
+        AND obat_satuan.id = stok.id_satuan
+        AND obat_tipe.id = stok.id_tipe
+        AND stok.id = $id
+        ORDER BY nama_obat ASC")->row_array();
+    }
 
     public function getKeyword($title)
     {
