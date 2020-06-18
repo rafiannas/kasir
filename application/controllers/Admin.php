@@ -1002,6 +1002,6 @@ class Admin extends CI_Controller
 
   public function download_format()
   {
-    force_download('assets/master_file/Format_Import_Obat.png', NULL);
+    force_download('assets/master_file/Format_Import_Obat.xlsx', NULL);
   }
 }
