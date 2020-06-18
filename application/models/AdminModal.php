@@ -95,6 +95,17 @@ class AdminModal extends CI_Model
         ORDER BY nama_obat ASC")->result_array();
     }
 
+    public function getHistori()
+    {
+        return $this->db->query("SELECT  history_stok.tgl_ubah, history_stok.harga_sebelum, history_stok.harga_sesudah, karyawan.nama, daftar_obat.nama_obat, obat_tipe.tipe, stok.netto, obat_satuan.satuan
+        FROM `history_stok`, stok, karyawan, daftar_obat, obat_tipe, obat_satuan
+        WHERE history_stok.id_stok = stok.id
+        AND karyawan.id = history_stok.id_karyawan
+        AND daftar_obat.id = stok.id_daftar_obat
+        AND obat_tipe.id = stok.id_tipe
+        AND obat_satuan.id = stok.id_satuan")->result_array();
+    }
+
     public function getStokById($id)
     {
         return $this->db->query("SELECT  stok.*, daftar_obat.nama_obat, obat_satuan.satuan, obat_tipe.tipe

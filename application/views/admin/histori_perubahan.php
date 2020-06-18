@@ -42,26 +42,28 @@
                                         <tr align="center">
                                             <th>No</th>
                                             <th>Nama Obat</th>
-                                            <th>Harga Jual</th>
-                                            <th>Karyawan</th>
+                                            <th>Kemasan</th>
+                                            <th>Harga Sebelum</th>
+                                            <th>Harga Sekarang</th>
+                                            <th>Dirubah Oleh</th>
                                             <th>Tgl. Ubah</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <?php
-                                                $i = 1;
-                                                foreach ($obat as $su) : ?>
+                                        <?php
+                                        $i = 1;
+                                        foreach ($histori as $su) : ?>
                                             <tr>
                                                 <td align="center"><?= $i; ?></td>
                                                 <td><?= $su['nama_obat']; ?></td>
-                                                <td><?= $su['satuan']; ?></td>
-                                                <td align="center">
-                                                    <a href="<?= base_url('admin/edit_obat/'); ?><?= $su['id']; ?>" class="btn btn-success btn-sm editobat" data-toggle="modal" data-target="#edit" data-id="<?= $su['id']; ?>"><i class="fas fa-edit"></i></a>
-                                                </td>
+                                                <td><?= $su['tipe']; ?>, <?= $su['netto']; ?> <?= $su['satuan']; ?></td>
+                                                <td><?= $su['harga_sebelum']; ?></td>
+                                                <td><?= $su['harga_sesudah']; ?></td>
+                                                <td><?= $su['nama']; ?></td>
+                                                <td><?= $su['tgl_ubah']; ?></td>
                                             </tr>
                                         <?php $i += 1;
-                                                endforeach; ?> -->
+                                        endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

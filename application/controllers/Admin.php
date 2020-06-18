@@ -117,25 +117,14 @@ class Admin extends CI_Controller
   {
     $data['title'] = 'Stok Obat';
     $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
-    $data['obat'] = $this->AdminModal->getObat();
+    $data['histori'] = $this->AdminModal->getHistori();
 
-    $this->form_validation->set_rules('namaobat', 'Nama Obat', 'required|trim');
-    if ($this->form_validation->run() == false) {
-      $this->load->view('templates/header', $data);
-      $this->load->view('templates/navbar', $data);
-      $this->load->view('templates/sidebar', $data);
-      $this->load->view('admin/histori_perubahan', $data);
-      $this->load->view('templates/quick_sidebar', $data);
-      $this->load->view('templates/footer', $data);
-    } else {
-      $nama = $this->input->post('namaobat');
-      $tambah = [
-        'nama_obat' => $nama,
-      ];
-      $this->db->insert('daftar_obat', $tambah);
-      $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert"> Berhasil menambahkan obat <b>' . $nama . '</b> </div>');
-      redirect('admin/katalog_obat');
-    }
+    $this->load->view('templates/header', $data);
+    $this->load->view('templates/navbar', $data);
+    $this->load->view('templates/sidebar', $data);
+    $this->load->view('admin/histori_perubahan', $data);
+    $this->load->view('templates/quick_sidebar', $data);
+    $this->load->view('templates/footer', $data);
   }
 
   public function katalog_obat()
@@ -503,24 +492,25 @@ class Admin extends CI_Controller
 
   public function update_harga()
   {
+
     $input_id = $_POST['id'];
-    // $input_stok = $_POST['stok'];
-    // $input_nomor = $_POST['tipe'];
-    $input_nama = $_POST['namaobat'];
     $input_harga = $_POST['hargajual'];
+    $data['stok'] = $this->db->get_where('stok', ['id' => $input_id])->row_array();
+    $harga_awal =  $data['stok']['harga_jualan'];
+    $input_nama = $_POST['namaobat'];
+
     $query = "UPDATE `stok` SET `harga_jualan` = '$input_harga' WHERE `id` ='$input_id' ";
     $this->db->query($query);
 
-    $data['stok'] = $this->db->get_where('stok', ['id' => $input_id])->row_array();
-    $hargajual =  $data['stok']['harga_jualan'];
-
-    if ($hargajual >= $input_harga or $hargajual < $input_harga) {
+    if ($harga_awal == $input_harga) {
       $this->session->set_flashdata('message', '<div class="tutup alert alert-success" role="alert">Harga jual <b>' . $input_nama . '</b> berhasil di updated!</div>');
       redirect('admin/stok');
     } else {
       date_default_timezone_set('Asia/Jakarta');
       $data = [
         'id_stok' => $input_id,
+        'harga_sebelum' => $harga_awal,
+        'harga_sesudah' => $input_harga,
         'id_karyawan' =>   $this->session->userdata('id_karyawan'),
         'tgl_ubah' => date('Y-m-d H:i:s'),
       ];

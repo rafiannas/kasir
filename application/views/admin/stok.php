@@ -101,6 +101,9 @@
             <form action="<?= base_url('admin/update_harga'); ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="netto" id="netto">
+                    <input type="hidden" name="satuan" id="satuan">
+                    <input type="hidden" name="id_obat" id="id_obat">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
