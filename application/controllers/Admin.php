@@ -331,6 +331,11 @@ class Admin extends CI_Controller
     } else {
       $id_penjualan = $cek_awal['id'];
     }
+    $data_pen = [
+      'id_penjualan' => $id_penjualan
+    ];
+    $this->session->set_userdata($data_pen);
+
 
     $data['rincian_penjualan'] = $this->ServerModal->listpenjualan($id_penjualan);
 
@@ -347,10 +352,15 @@ class Admin extends CI_Controller
     } else {
       $obat = $this->input->post('obat');
       $cek_barang = $this->ServerModal->cekBarang($obat);
+      $info_obat = $this->db->query("SELECT stok.*, daftar_obat.nama_obat 
+      FROM stok, daftar_obat 
+      WHERE stok.id_daftar_obat = daftar_obat.id
+      AND stok.id_daftar_obat = $obat")->row_array();
+
       if ($cek_barang) {
         $upd = [
           'jumlah' => $this->input->post('jumlah') + $cek_barang['jumlah'],
-          'harga_per_obat' => ($this->input->post('jumlah') * $this->input->post('harga_beli')) + $cek_barang['harga_per_obat']
+          'harga_per_obat' => $info_obat['harga_jualan']
         ];
         $this->db->where('id', $cek_barang['id']);
         $this->db->update('detail_penjualan', $upd);
@@ -359,9 +369,10 @@ class Admin extends CI_Controller
       } else {
         $inp = [
           'id_penjualan' => $id_penjualan,
-          'obat' => $obat,
+          'id_daftar_obat' => $obat,
           'jumlah' => $this->input->post('jumlah'),
-          'harga_per_obat' => $this->input->post('jumlah') * $this->input->post('harga_beli')
+          'obat' => $info_obat['nama_obat'],
+          'harga_per_obat' =>  $info_obat['harga_jualan']
         ];
         $this->db->insert('detail_penjualan', $inp);
         $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
@@ -372,17 +383,21 @@ class Admin extends CI_Controller
 
   public function checkout()
   {
-    $data['title'] = 'penjualan';
-    $data['saya_karyawan'] = $this->db->get_where('karyawan', ['id' => $this->session->userdata('id_karyawan')])->row_array();
+    date_default_timezone_set('Asia/Jakarta');
+    $upd = [
+      'tgl' => date('Y-m-d H:i:s'),
+      'ppn' => $this->input->post('ppn'),
+      'total_harga' => $this->input->post('total_harga'),
+      'total+ppn' => $this->input->post('total+ppn'),
+      'total_bayar' => $this->input->post('uang_bayar'),
+      'jumlah_beli' => $this->input->post('jumlah_beli'),
+      'kembalian' => $this->input->post('x'),
+      'catatan' => $this->input->post('catatan')
+    ];
 
-    $penjualan = $this->ServerModal->Checkout($this->session->userdata('id_karyawan'));
-    $data['rincian_penjualan'] = $this->ServerModal->listCheckout($penjualan['id']);
-    $this->load->view('templates/header', $data);
-    $this->load->view('templates/navbar', $data);
-    $this->load->view('templates/sidebar', $data);
-    $this->load->view('admin/checkout', $data);
-    $this->load->view('templates/quick_sidebar', $data);
-    $this->load->view('templates/footer', $data);
+    $this->db->where('id', $this->session->userdata('id_penjualan'));
+    $this->db->update('penjualan', $upd);
+    redirect('admin');
   }
 
   function add_to_cart()
@@ -865,7 +880,7 @@ class Admin extends CI_Controller
   public function hapus_barang($id)
   {
     $this->db->where('id', $id);
-    $this->db->delete('detail_pejualan');
+    $this->db->delete('detail_penjualan');
 
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success tutup" role="alert">Berhasil Menghapus obat ! </div>');
     redirect('admin/tambahpenjualan');

@@ -12,7 +12,7 @@
                                     <select id="basic" name="obat" class="form-control" required>
                                         <option value="">- Pilih Obat-</option>
                                         <?php foreach ($dataobat as $p) : ?>
-                                            <option value="<?= $p['id']; ?>"><?= $p['nama_obat']; ?> : <?= $p['tipe']; ?> <?= $p['netto']; ?> <?= $p['satuan']; ?> </option>
+                                            <option value="<?= $p['id_daftar_obat']; ?>"><?= $p['nama_obat']; ?> <?= $p['tipe']; ?> <?= $p['netto']; ?> <?= $p['satuan']; ?> : Rp. <?= number_format($p['harga_jualan']); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -39,33 +39,85 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="display table table-striped table-hover">
+                                <table class="display table table-bordered table-hover">
                                     <thead>
-                                        <tr>
+                                        <tr align="center">
                                             <th>Nama Obat</th>
                                             <th>Harga</th>
                                             <th>Jumlah</th>
-                                            <th>Total</th>
+                                            <th>Total (Rp.)</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $total = 0; ?>
+                                        <?php $total = 0;
+                                        $i = 0;
+                                        $all = 0; ?>
                                         <?php foreach ($rincian_penjualan as $rp) : ?>
                                             <tr>
                                                 <td><?= $rp['obat']; ?></td>
                                                 <td><?= number_format($rp['harga_per_obat']); ?></td>
                                                 <td><?= $rp['jumlah']; ?></td>
                                                 <?php $total = $rp['harga_per_obat'] * $rp['jumlah']; ?>
-                                                <td><?= number_format($total); ?></td>
+                                                <?php $all += $total; ?>
+                                                <td align="right"><?= number_format($total); ?></td>
                                                 <td><a href="<?= base_url('admin/hapus_barang'); ?>/<?= $rp['id']; ?>"><i class="fas fa-fw fa-trash text-danger"></i></a></td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php $i += 1;
+                                        endforeach; ?>
+
+                                        <tr>
+                                            <td colspan="3" align="right"><b>Total</b>
+                                                <br>
+                                                PPN 10%
+                                            </td>
+                                            <td align="right"><b><?= number_format($all); ?></b>
+                                                <br>
+                                                <?php $ppn = $all * 0.1;
+                                                echo number_format($ppn);
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" align="right"><b>Total Harga</b>
+                                                <br>
+                                                Uang Bayar
+                                                <br>
+                                                Kembalian
+                                            </td>
+                                            <td align="right">
+                                                <form oninput="x.value=parseInt(a.value)-parseInt(b.value)" method="post" action="<?= base_url('admin/checkout'); ?>">
+                                                    <input name="total_harga" type="number" id="b" readonly value="<?= $ppn + $all; ?>"><br><br>
+                                                    <input name="uang_bayar" type="number" id="a"><br><br>
+                                                    <input readonly name="x" for="a b"></input>
+
+                                                    <br>
+
+                                            </td>
+                                        </tr>
+
+                                        <input type="hidden" name="ppn" value="<?= $ppn; ?>">
+                                        <input type="hidden" name="total+ppn" value="<?= $all; ?>">
+                                        <input type="hidden" name="jumlah_beli" value="<?= $i; ?>">
+
+
                                     </tbody>
                                 </table>
                             </div>
-                            <center><a href="<?= base_url('admin/checkout'); ?>" class=" btn btn-primary btn-round">Checkout</a> </center>
+                            <center>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" name="catatan" id="catatan" placeholder="Catatan">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class=" btn btn-primary btn-round">Checkout</button>
+                                    </div>
+                                </div>
+                                </form>
+                            </center>
+
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -57,8 +57,8 @@
                                                 <td align="center"><?= $i; ?></td>
                                                 <td><?= $su['nama_obat']; ?></td>
                                                 <td><?= $su['tipe']; ?>, <?= $su['netto']; ?> <?= $su['satuan']; ?></td>
-                                                <td><?= $su['harga_sebelum']; ?></td>
-                                                <td><?= $su['harga_sesudah']; ?></td>
+                                                <td>Rp. <?= number_format($su['harga_sebelum']); ?></td>
+                                                <td>Rp. <?= number_format($su['harga_sesudah']); ?></td>
                                                 <td><?= $su['nama']; ?></td>
                                                 <td><?= $su['tgl_ubah']; ?></td>
                                             </tr>

@@ -61,7 +61,7 @@ class AdminModal extends CI_Model
     {
         return $this->db->query("SELECT daftar_obat.*
         FROM daftar_obat
-        ORDER BY nama_obat ASC")->result_array();
+        ORDER BY nama_obat DESC")->result_array();
     }
 
     public function getObatStok()
@@ -82,7 +82,7 @@ class AdminModal extends CI_Model
         AND obat.id_supplier = supplier.id
         AND obat.id_tipe = obat_tipe.id
         AND obat.id_satuan = obat_satuan.id
-        ORDER BY nama_obat ASC")->result_array();
+        ORDER BY tgl_input DESC")->result_array();
     }
 
     public function getStok()
@@ -103,7 +103,9 @@ class AdminModal extends CI_Model
         AND karyawan.id = history_stok.id_karyawan
         AND daftar_obat.id = stok.id_daftar_obat
         AND obat_tipe.id = stok.id_tipe
-        AND obat_satuan.id = stok.id_satuan")->result_array();
+        AND obat_satuan.id = stok.id_satuan
+        ORDER BY tgl_ubah DESC
+        ")->result_array();
     }
 
     public function getStokById($id)

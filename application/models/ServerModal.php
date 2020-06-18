@@ -48,7 +48,7 @@ class ServerModal extends CI_Model
     public function cekBarang($obat)
     {
         $q = "SELECT * FROM detail_penjualan
-                WHERE obat = '$obat'
+                WHERE id_daftar_obat = '$obat'
         ";
         return $this->db->query($q)->row_array();
     }
@@ -57,9 +57,10 @@ class ServerModal extends CI_Model
     {
         $q = "SELECT daftar_obat.nama_obat, detail_penjualan.*
         FROM detail_penjualan, daftar_obat
-        WHERE detail_penjualan.obat = daftar_obat.id 
+        WHERE detail_penjualan.id_daftar_obat = daftar_obat.id 
         AND detail_penjualan.id_penjualan = $id
         ";
+
         return $this->db->query($q)->result_array();
     }
 
