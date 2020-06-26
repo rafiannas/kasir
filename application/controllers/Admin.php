@@ -351,38 +351,62 @@ class Admin extends CI_Controller
       $this->load->view('templates/footer', $data);
     } else {
       $obat = $this->input->post('obat');
-      $cek_barang = $this->ServerModal->cekBarang($obat);
+
+      $cek_barang = $this->ServerModal->cekBarang($obat, $id_penjualan);
       $info_obat = $this->db->query("SELECT stok.*, daftar_obat.nama_obat 
       FROM stok, daftar_obat 
       WHERE stok.id_daftar_obat = daftar_obat.id
       AND stok.id_daftar_obat = $obat")->row_array();
 
+      $qty_obat = $info_obat['stok'];
+      $jmh_beli_obat = $this->input->post('jumlah');
+      if ($qty_obat < $jmh_beli_obat) {
+        $this->session->set_flashdata('message', '<div class="alert alert-danger tutup" role="alert">Stok tidak cukup !</div>');
+        redirect('admin/tambahpenjualan');
+      } else {
+        $after = $qty_obat - $jmh_beli_obat;
+      }
+
       if ($cek_barang) {
         $upd = [
-          'jumlah' => $this->input->post('jumlah') + $cek_barang['jumlah'],
+          'jumlah' => $jmh_beli_obat + $cek_barang['jumlah'],
           'harga_per_obat' => $info_obat['harga_jualan']
         ];
         $this->db->where('id', $cek_barang['id']);
         $this->db->update('detail_penjualan', $upd);
+
+        $this->db->set('stok', $after);
+        $this->db->where('id', $info_obat['id']);
+        $this->db->update('stok');
+
         $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
         redirect('admin/tambahpenjualan');
+
       } else {
+
         $inp = [
           'id_penjualan' => $id_penjualan,
           'id_daftar_obat' => $obat,
-          'jumlah' => $this->input->post('jumlah'),
+          'jumlah' => $jmh_beli_obat,
           'obat' => $info_obat['nama_obat'],
           'harga_per_obat' =>  $info_obat['harga_jualan']
         ];
         $this->db->insert('detail_penjualan', $inp);
+
+        $this->db->set('stok', $after);
+        $this->db->where('id', $info_obat['id']);
+        $this->db->update('stok');
+
         $this->session->set_flashdata('message', '<div class="alert alert-success tutup" role="alert">Berhasil menambahkan obat !</div>');
         redirect('admin/tambahpenjualan');
       }
     }
   }
 
+
   public function checkout()
   {
+
     date_default_timezone_set('Asia/Jakarta');
     $upd = [
       'tgl' => date('Y-m-d H:i:s'),
@@ -392,11 +416,14 @@ class Admin extends CI_Controller
       'total_bayar' => $this->input->post('uang_bayar'),
       'jumlah_beli' => $this->input->post('jumlah_beli'),
       'kembalian' => $this->input->post('x'),
-      'catatan' => $this->input->post('catatan')
+      'catatan' => $this->input->post('catatan'),
+      'id_status' => 2
     ];
 
     $this->db->where('id', $this->session->userdata('id_penjualan'));
     $this->db->update('penjualan', $upd);
+
+
     redirect('admin');
   }
 
@@ -878,9 +905,21 @@ class Admin extends CI_Controller
   }
 
   public function hapus_barang($id)
-  {
+  {    
+    $det_pen = $this->db->get_where('detail_penjualan', ['id' =>$id])->row_array();
+    $stok_det_pen = $det_pen['jumlah'];
+
+    $barang = $this->db->get_where('stok', ['id_daftar_obat' =>$det_pen['id_daftar_obat']])->row_array();
+    $stok_barang = $barang['stok'];
+
     $this->db->where('id', $id);
     $this->db->delete('detail_penjualan');
+
+    $stok_upd = $stok_det_pen + $stok_barang;
+
+    $this->db->set('stok', $stok_upd);
+    $this->db->where('id', $barang['id']);
+    $this->db->update('stok');
 
     $this->session->set_flashdata('message', '<div class="tutup alert alert-success tutup" role="alert">Berhasil Menghapus obat ! </div>');
     redirect('admin/tambahpenjualan');

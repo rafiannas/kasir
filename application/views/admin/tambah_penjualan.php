@@ -95,9 +95,10 @@
 
                                             </td>
                                         </tr>
-
+                                        <!-- <form action="<?= base_url('admin/checkout'); ?>"> -->
                                         <input type="hidden" name="ppn" value="<?= $ppn; ?>">
-                                        <input type="hidden" name="total+ppn" value="<?= $all; ?>">
+
+                                        <input type="hidden" name="total+ppn" value="<?= $all + $ppn; ?>">
                                         <input type="hidden" name="jumlah_beli" value="<?= $i; ?>">
 
 

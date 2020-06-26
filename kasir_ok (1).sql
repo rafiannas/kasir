@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Jun 2020 pada 12.41
+-- Waktu pembuatan: 26 Jun 2020 pada 19.06
 -- Versi server: 10.1.37-MariaDB
 -- Versi PHP: 7.3.1
 
@@ -83,9 +83,11 @@ CREATE TABLE `detail_penjualan` (
 --
 
 INSERT INTO `detail_penjualan` (`id`, `id_penjualan`, `id_daftar_obat`, `obat`, `jumlah`, `harga_per_obat`) VALUES
-(31, 17, 10866, 'Betadine', 13, 15000),
-(32, 17, 10865, 'Obat Paracetamol', 24, 5500),
-(33, 17, 10864, 'Obat Panadol', 10, 5000);
+(36, 18, 10866, 'Betadine', 16, 15000),
+(37, 18, 10864, 'Obat Panadol', 5, 5000),
+(38, 19, 10865, 'Obat Paracetamol', 3, 5500),
+(39, 19, 10866, 'Betadine', 5, 15000),
+(40, 19, 10864, 'Obat Panadol', 4, 5000);
 
 -- --------------------------------------------------------
 
@@ -336,7 +338,9 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`id`, `tgl`, `ppn`, `total_harga`, `total+ppn`, `total_bayar`, `jumlah_beli`, `kembalian`, `id_karyawan`, `id_status`, `catatan`) VALUES
-(17, '2020-06-18 17:36:46', 37700, 414700, 377000, 500000, 3, 85300, 7, 1, 'asdasd');
+(18, '2020-06-26 22:18:42', 5000, 55000, 55000, 100000, 2, 45000, 7, 2, ''),
+(19, '2020-06-26 22:41:18', 11150, 122650, 122650, 500000, 3, 377350, 7, 2, 'asd'),
+(20, '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 0, 7, 1, '');
 
 -- --------------------------------------------------------
 
@@ -360,7 +364,7 @@ CREATE TABLE `stok` (
 --
 
 INSERT INTO `stok` (`id`, `id_daftar_obat`, `id_tipe`, `id_satuan`, `id_supplier`, `netto`, `stok`, `harga_jualan`) VALUES
-(3, 10866, 7, 2, 2, 50, 665, 15000),
+(3, 10866, 7, 2, 2, 50, 655, 15000),
 (4, 10864, 6, 1, 1, 500, 100, 5000),
 (5, 10865, 6, 1, 2, 600, 200, 5500);
 
@@ -499,7 +503,7 @@ ALTER TABLE `daftar_obat`
 -- AUTO_INCREMENT untuk tabel `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_stok`
@@ -559,7 +563,7 @@ ALTER TABLE `obat_tipe`
 -- AUTO_INCREMENT untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `stok`

@@ -45,10 +45,11 @@ class ServerModal extends CI_Model
         return $this->db->query($q)->row_array();
     }
 
-    public function cekBarang($obat)
+    public function cekBarang($obat, $id_pen)
     {
         $q = "SELECT * FROM detail_penjualan
                 WHERE id_daftar_obat = '$obat'
+                AND id_penjualan = $id_pen
         ";
         return $this->db->query($q)->row_array();
     }
