@@ -176,14 +176,12 @@ class Admin extends CI_Controller
     date_default_timezone_set('Asia/Jakarta');
     $idobat = $this->input->post('obat');
     $supplier = $this->input->post('supplier');
-    $tipe = $this->input->post('tipe');
     $satuan = $this->input->post('satuan');
     $netto = $this->input->post('netto');
     $tambah = [
       'id_daftar_obat' =>  $idobat,
       'id_supplier' => $supplier,
       'harga_beli' => $this->input->post('hargabeli'),
-      'id_tipe' => $tipe,
       'id_satuan' => $satuan,
       'jumlah_obat' => $this->input->post('stok'),
       'netto' => $netto,
@@ -193,7 +191,6 @@ class Admin extends CI_Controller
     $query = "SELECT * FROM stok 
     where id_daftar_obat = $idobat 
     and id_supplier = $supplier
-    and id_tipe = $tipe
     and id_satuan = $satuan
     and netto = $netto";
 
@@ -210,7 +207,6 @@ class Admin extends CI_Controller
       $tambah2 = [
         'id_daftar_obat' => $idobat,
         'id_supplier' => $supplier,
-        'id_tipe' => $tipe,
         'id_satuan' => $satuan,
         'stok' => $this->input->post('stok'),
         'netto' => $netto,

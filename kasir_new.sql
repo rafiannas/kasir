@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Jun 2020 pada 13.20
+-- Waktu pembuatan: 27 Jun 2020 pada 15.59
 -- Versi server: 10.4.8-MariaDB
 -- Versi PHP: 7.1.33
 
@@ -63,7 +63,8 @@ INSERT INTO `daftar_obat` (`id`, `id_tipe`, `nama_obat`) VALUES
 (10865, 6, 'Paracetamol'),
 (10866, 6, 'Betadine'),
 (10867, 6, 'Bodrexin'),
-(10868, 7, 'Paracetamol');
+(10868, 7, 'Paracetamol'),
+(10869, 9, 'Tolak Miskin');
 
 -- --------------------------------------------------------
 
@@ -74,19 +75,14 @@ INSERT INTO `daftar_obat` (`id`, `id_tipe`, `nama_obat`) VALUES
 CREATE TABLE `detail_penjualan` (
   `id` int(11) NOT NULL,
   `id_penjualan` varchar(15) NOT NULL,
+  `id_tipe` int(11) NOT NULL,
+  `netto` int(11) NOT NULL,
+  `id_satuan` int(11) NOT NULL,
   `id_daftar_obat` int(11) NOT NULL,
   `obat` varchar(50) NOT NULL,
   `jumlah` int(11) NOT NULL,
   `harga_per_obat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `detail_penjualan`
---
-
-INSERT INTO `detail_penjualan` (`id`, `id_penjualan`, `id_daftar_obat`, `obat`, `jumlah`, `harga_per_obat`) VALUES
-(76, '2706200001', 10864, 'Obat Panadol', 3, 5000),
-(77, '2706200002', 10864, 'Obat Panadol', 6, 5000);
 
 -- --------------------------------------------------------
 
@@ -271,7 +267,11 @@ INSERT INTO `obat` (`id`, `id_daftar_obat`, `id_supplier`, `id_satuan`, `netto`,
 (22, 10864, 1, 1, 500, 2000, 100, '2020-06-18 15:05:57'),
 (23, 10865, 2, 1, 600, 3000, 200, '2020-06-18 15:07:00'),
 (24, 10866, 1, 1, 20, 6, 900, '2020-06-27 14:24:51'),
-(25, 10864, 1, 2, 20, 6, 900, '2020-06-27 16:45:12');
+(25, 10864, 1, 2, 20, 6, 900, '2020-06-27 16:45:12'),
+(26, 10869, 2, 1, 200, 2000, 200, '2020-06-27 20:41:19'),
+(27, 10869, 2, 1, 200, 2000, 200, '2020-06-27 20:41:39'),
+(28, 10869, 2, 1, 200, 2000, 200, '2020-06-27 20:42:14'),
+(29, 10869, 2, 1, 200, 2000, 100, '2020-06-27 20:49:54');
 
 -- --------------------------------------------------------
 
@@ -339,8 +339,7 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`id`, `tgl`, `ppn`, `total_harga`, `total+ppn`, `total_bayar`, `jumlah_beli`, `kembalian`, `id_karyawan`, `id_status`, `catatan`) VALUES
-('2706200001', '2020-06-27 16:43:43', 1500, 15000, 16500, 20000, 1, 3500, 7, 2, ''),
-('2706200002', '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 0, 7, 1, '');
+('2706200001', '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 0, 7, 1, '');
 
 -- --------------------------------------------------------
 
@@ -365,10 +364,11 @@ CREATE TABLE `stok` (
 
 INSERT INTO `stok` (`id`, `id_daftar_obat`, `id_tipe`, `id_satuan`, `id_supplier`, `netto`, `stok`, `harga_jualan`) VALUES
 (3, 10866, 6, 2, 2, 50, 0, 15000),
-(4, 10864, 6, 1, 1, 500, 4, 5000),
-(5, 10865, 6, 1, 2, 600, 54, 5500),
+(4, 10864, 6, 1, 1, 500, 2, 5000),
+(5, 10865, 6, 1, 2, 600, 42, 5500),
 (6, 10866, 6, 1, 1, 20, 900, 8),
-(7, 10864, 6, 2, 1, 20, 900, 8);
+(7, 10864, 6, 2, 1, 20, 900, 8),
+(8, 10869, 0, 1, 2, 200, 300, 10000);
 
 -- --------------------------------------------------------
 
@@ -499,13 +499,13 @@ ALTER TABLE `active`
 -- AUTO_INCREMENT untuk tabel `daftar_obat`
 --
 ALTER TABLE `daftar_obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10869;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10870;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_stok`
@@ -547,7 +547,7 @@ ALTER TABLE `karyawan_sub_menu`
 -- AUTO_INCREMENT untuk tabel `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat_satuan`
@@ -565,7 +565,7 @@ ALTER TABLE `obat_tipe`
 -- AUTO_INCREMENT untuk tabel `stok`
 --
 ALTER TABLE `stok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `supplier`

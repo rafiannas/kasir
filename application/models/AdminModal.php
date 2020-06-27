@@ -122,7 +122,7 @@ class AdminModal extends CI_Model
         FROM stok, daftar_obat, obat_satuan, obat_tipe
         WHERE stok.id_daftar_obat = daftar_obat.id
         AND obat_satuan.id = stok.id_satuan
-        AND obat_tipe.id = stok.id_tipe
+        AND obat_tipe.id = daftar_obat.id_tipe
         ORDER BY nama_obat ASC")->result_array();
     }
 
