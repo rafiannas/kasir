@@ -65,6 +65,15 @@ class ServerModal extends CI_Model
         return $this->db->query($q)->result_array();
     }
 
+    public function Bayar($id)
+    {
+        $q = "SELECT tgl, total_harga, `total+ppn`, total_bayar, kembalian, catatan, id
+        FROM penjualan
+        WHERE id = $id
+        ";
+        return $this->db->query($q)->row_array();
+    }
+
     public function Checkout($id)
     {
         $q = "SELECT * FROM penjualan

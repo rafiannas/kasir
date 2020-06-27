@@ -42,10 +42,10 @@
                                     <i class="fa fa-plus"></i>
                                     Tambah Obat
                                 </button>
-                                <button class="btn btn-success btn-round ml-3" data-toggle="modal" data-target="#import">
+                                <!-- <button class="btn btn-success btn-round ml-3" data-toggle="modal" data-target="#import">
                                     <i class="fas fa-file-import mr-2"></i>
                                     Import Excel
-                                </button>
+                                </button> -->
                             </div>
                             <div class="table-responsive mt-4">
                                 <table id="add-row" class="display table table-striped table-hover">
@@ -53,6 +53,7 @@
                                         <tr align="center">
                                             <th>No</th>
                                             <th>Nama Obat</th>
+                                            <th>Tipe Obat</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -63,6 +64,7 @@
                                             <tr>
                                                 <td align="center"><?= $i; ?></td>
                                                 <td><?= $su['nama_obat']; ?></td>
+                                                <td><?= $su['tipe']; ?></td>
                                                 <td align="center">
                                                     <a href="<?= base_url('admin/edit_obat/'); ?><?= $su['id']; ?>" class="btn btn-success btn-sm editobat" data-toggle="modal" data-target="#edit" data-id="<?= $su['id']; ?>"><i class="fas fa-edit"></i></a>
                                                 </td>
@@ -114,6 +116,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                <label class="mb-2">Kemasan</label>
+                                <select id="basic3" name="tipe" class="form-control-sm" required style="width:100%;">
+                                                <option value="">Pilih Kemasan</option>
+                                                <?php foreach ($tipeobat as $p) : ?>
+                                                    <option value="<?= $p['id']; ?>"><?= $p['tipe']; ?></option>
+                                                <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="submit" id="addRowButton" class="btn btn-primary">Simpan</button>
@@ -125,7 +140,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="import" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -159,7 +174,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Modal -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
@@ -186,6 +201,19 @@
                             <div class="form-group form-group-default">
                                 <label>Nama Obat</label>
                                 <input type="text" class="form-control" id="namaobatku" name="namaobatku" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group form-group-default">
+                                <label class="mb-2">Kemasan</label>
+                                <select id="basic3" name="tipeku" id="tipeku" class="form-control-sm" required style="width:100%;">
+                                                <option value="">Pilih Kemasan</option>
+                                                <?php foreach ($tipeobat as $p) : ?>
+                                                    <option value="<?= $p['id']; ?>"><?= $p['tipe']; ?></option>
+                                                <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                     </div>

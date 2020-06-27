@@ -15,11 +15,41 @@ class AdminModal extends CI_Model
         ")->result_array();
     }
 
+    function get_no_invoice(){
+		$q = $this->db->query("SELECT MAX(RIGHT(id,4)) AS kd_max FROM penjualan WHERE DATE(tgl)=CURDATE()");
+        $kd = "";
+        if($q->num_rows()>0){
+            foreach($q->result() as $k){
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%04s", $tmp);
+            }
+        }else{
+            $kd = "0001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return date('dmy').$kd;
+	}
+
     public function getSupplier()
     {
         return $this->db->query("SELECT *
         FROM supplier
         ORDER BY nama_supplier ASC")->result_array();
+    }
+
+    public function getHistoriPenjualan()
+    {
+        return $this->db->query("SELECT DISTINCT (penjualan.tgl),penjualan.id, penjualan.ppn, penjualan.total_harga, penjualan.catatan, penjualan.total_bayar,
+        penjualan.id_karyawan, penjualan.jumlah_beli,
+        detail_penjualan.id_daftar_obat, karyawan.nama, daftar_obat.nama_obat, obat_tipe.tipe, obat_satuan.satuan
+        FROM penjualan, detail_penjualan, karyawan, daftar_obat, stok, obat_tipe, obat_satuan
+        where penjualan.id = detail_penjualan.id_penjualan
+        and penjualan.id_karyawan = karyawan.id
+        and detail_penjualan.id_daftar_obat = daftar_obat.id
+        and detail_penjualan.id_daftar_obat = stok.id_daftar_obat
+        and stok.id_tipe = obat_tipe.id
+        and stok.id_satuan = obat_satuan.id
+        and id_status=2")->result_array();
     }
 
     public function getSupplierById($id)
@@ -59,8 +89,9 @@ class AdminModal extends CI_Model
 
     public function getObat()
     {
-        return $this->db->query("SELECT daftar_obat.*
-        FROM daftar_obat
+        return $this->db->query("SELECT daftar_obat.*, obat_tipe.tipe
+        FROM daftar_obat, obat_tipe
+        where daftar_obat.id_tipe = obat_tipe.id
         ORDER BY nama_obat DESC")->result_array();
     }
 
@@ -80,7 +111,7 @@ class AdminModal extends CI_Model
         FROM daftar_obat, obat_tipe, obat, supplier, obat_satuan
         WHERE obat.id_daftar_obat = daftar_obat.id
         AND obat.id_supplier = supplier.id
-        AND obat.id_tipe = obat_tipe.id
+        AND daftar_obat.id_tipe = obat_tipe.id
         AND obat.id_satuan = obat_satuan.id
         ORDER BY tgl_input DESC")->result_array();
     }

@@ -13,19 +13,13 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Kelola Mitra</a>
+                        <a href="#">Super Admin</a>
                     </li>
                     <li class="separator">
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= base_url('superadmin/list_toko') ?>">Daftar Toko</a>
-                    </li>
-                    <li class="separator">
-                        <i class="flaticon-right-arrow"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#"><strong>Info Toko</strong></a>
+                        <a href="#"><strong><?=$title?></strong></a>
                     </li>
                 </ul>
             </div>
@@ -132,6 +126,7 @@
                         <div class="card-body">
                             <div class="user-profile text-center">
                                 <div class="name"> <?= $detail['nama']; ?></div>
+                                <div class="separator-solid"></div>
                                 <div class="job"> <?= $detail['role']; ?></div>
                             </div>
                         </div>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Jun 2020 pada 19.06
--- Versi server: 10.1.37-MariaDB
--- Versi PHP: 7.3.1
+-- Waktu pembuatan: 27 Jun 2020 pada 13.20
+-- Versi server: 10.4.8-MariaDB
+-- Versi PHP: 7.1.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `kasir_ok`
+-- Database: `kasir_new`
 --
 
 -- --------------------------------------------------------
@@ -50,6 +50,7 @@ INSERT INTO `active` (`id`, `keterangan`, `warna`) VALUES
 
 CREATE TABLE `daftar_obat` (
   `id` int(11) NOT NULL,
+  `id_tipe` int(11) NOT NULL,
   `nama_obat` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -57,11 +58,12 @@ CREATE TABLE `daftar_obat` (
 -- Dumping data untuk tabel `daftar_obat`
 --
 
-INSERT INTO `daftar_obat` (`id`, `nama_obat`) VALUES
-(10864, 'Obat Panadol'),
-(10865, 'Obat Paracetamol'),
-(10866, 'Betadine'),
-(10867, 'Bodrexin');
+INSERT INTO `daftar_obat` (`id`, `id_tipe`, `nama_obat`) VALUES
+(10864, 6, 'Panadol'),
+(10865, 6, 'Paracetamol'),
+(10866, 6, 'Betadine'),
+(10867, 6, 'Bodrexin'),
+(10868, 7, 'Paracetamol');
 
 -- --------------------------------------------------------
 
@@ -71,7 +73,7 @@ INSERT INTO `daftar_obat` (`id`, `nama_obat`) VALUES
 
 CREATE TABLE `detail_penjualan` (
   `id` int(11) NOT NULL,
-  `id_penjualan` int(11) NOT NULL,
+  `id_penjualan` varchar(15) NOT NULL,
   `id_daftar_obat` int(11) NOT NULL,
   `obat` varchar(50) NOT NULL,
   `jumlah` int(11) NOT NULL,
@@ -83,11 +85,8 @@ CREATE TABLE `detail_penjualan` (
 --
 
 INSERT INTO `detail_penjualan` (`id`, `id_penjualan`, `id_daftar_obat`, `obat`, `jumlah`, `harga_per_obat`) VALUES
-(36, 18, 10866, 'Betadine', 16, 15000),
-(37, 18, 10864, 'Obat Panadol', 5, 5000),
-(38, 19, 10865, 'Obat Paracetamol', 3, 5500),
-(39, 19, 10866, 'Betadine', 5, 15000),
-(40, 19, 10864, 'Obat Panadol', 4, 5000);
+(76, '2706200001', 10864, 'Obat Panadol', 3, 5000),
+(77, '2706200002', 10864, 'Obat Panadol', 6, 5000);
 
 -- --------------------------------------------------------
 
@@ -232,8 +231,9 @@ INSERT INTO `karyawan_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_ac
 (5, 1, 'Pembelian Obat', 'admin/obat', '\r\nfas fa-medkit', 1),
 (6, 1, 'Stok Obat', 'admin/stok', 'fas fa-boxes', 1),
 (7, 1, 'Penjualan', 'admin/tambahpenjualan', 'fas fa-shopping-cart', 1),
-(8, 1, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1),
-(9, 1, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
+(8, 1, 'Histori Penjualan', 'admin/histori_penjualan', 'fas fa-history', 1),
+(9, 1, 'Laporan Stok', 'admin/laporan_stok', 'fas fa-file-alt', 1),
+(10, 1, 'Laporan Penjualan', 'admin/laporan_penjualan', 'fas fa-file-invoice', 1),
 (40, 3, 'Dashboard', 'kasir', 'fas fa-fw fa-tachometer-alt\r\n', 1),
 (41, 3, 'Penjualan', 'kasir/penjualan', 'fas fa-shopping-cart', 1),
 (42, 3, 'Histori Penjualan', 'kasir/histori_penjualan', 'fas fa-history', 1),
@@ -256,7 +256,6 @@ CREATE TABLE `obat` (
   `id_daftar_obat` int(11) NOT NULL,
   `id_supplier` int(11) NOT NULL,
   `id_satuan` int(11) NOT NULL,
-  `id_tipe` int(11) NOT NULL,
   `netto` int(11) NOT NULL,
   `harga_beli` int(11) NOT NULL,
   `jumlah_obat` int(11) NOT NULL,
@@ -267,10 +266,12 @@ CREATE TABLE `obat` (
 -- Dumping data untuk tabel `obat`
 --
 
-INSERT INTO `obat` (`id`, `id_daftar_obat`, `id_supplier`, `id_satuan`, `id_tipe`, `netto`, `harga_beli`, `jumlah_obat`, `tgl_input`) VALUES
-(21, 10866, 2, 2, 7, 50, 4000, 665, '2020-06-18 10:11:06'),
-(22, 10864, 1, 1, 6, 500, 2000, 100, '2020-06-18 15:05:57'),
-(23, 10865, 2, 1, 6, 600, 3000, 200, '2020-06-18 15:07:00');
+INSERT INTO `obat` (`id`, `id_daftar_obat`, `id_supplier`, `id_satuan`, `netto`, `harga_beli`, `jumlah_obat`, `tgl_input`) VALUES
+(21, 10866, 2, 2, 50, 4000, 665, '2020-06-18 10:11:06'),
+(22, 10864, 1, 1, 500, 2000, 100, '2020-06-18 15:05:57'),
+(23, 10865, 2, 1, 600, 3000, 200, '2020-06-18 15:07:00'),
+(24, 10866, 1, 1, 20, 6, 900, '2020-06-27 14:24:51'),
+(25, 10864, 1, 2, 20, 6, 900, '2020-06-27 16:45:12');
 
 -- --------------------------------------------------------
 
@@ -320,27 +321,26 @@ INSERT INTO `obat_tipe` (`id`, `tipe`) VALUES
 --
 
 CREATE TABLE `penjualan` (
-  `id` int(11) NOT NULL,
+  `id` varchar(15) NOT NULL,
   `tgl` datetime NOT NULL,
   `ppn` int(11) NOT NULL,
   `total_harga` int(11) NOT NULL,
   `total+ppn` int(11) NOT NULL,
-  `total_bayar` int(50) NOT NULL,
+  `total_bayar` int(11) NOT NULL,
   `jumlah_beli` int(11) NOT NULL,
-  `kembalian` int(25) NOT NULL,
+  `kembalian` int(11) NOT NULL,
   `id_karyawan` int(11) NOT NULL,
   `id_status` int(11) NOT NULL,
-  `catatan` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `catatan` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `penjualan`
 --
 
 INSERT INTO `penjualan` (`id`, `tgl`, `ppn`, `total_harga`, `total+ppn`, `total_bayar`, `jumlah_beli`, `kembalian`, `id_karyawan`, `id_status`, `catatan`) VALUES
-(18, '2020-06-26 22:18:42', 5000, 55000, 55000, 100000, 2, 45000, 7, 2, ''),
-(19, '2020-06-26 22:41:18', 11150, 122650, 122650, 500000, 3, 377350, 7, 2, 'asd'),
-(20, '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 0, 7, 1, '');
+('2706200001', '2020-06-27 16:43:43', 1500, 15000, 16500, 20000, 1, 3500, 7, 2, ''),
+('2706200002', '0000-00-00 00:00:00', 0, 0, 0, 0, 0, 0, 7, 1, '');
 
 -- --------------------------------------------------------
 
@@ -364,9 +364,11 @@ CREATE TABLE `stok` (
 --
 
 INSERT INTO `stok` (`id`, `id_daftar_obat`, `id_tipe`, `id_satuan`, `id_supplier`, `netto`, `stok`, `harga_jualan`) VALUES
-(3, 10866, 7, 2, 2, 50, 655, 15000),
-(4, 10864, 6, 1, 1, 500, 100, 5000),
-(5, 10865, 6, 1, 2, 600, 200, 5500);
+(3, 10866, 6, 2, 2, 50, 0, 15000),
+(4, 10864, 6, 1, 1, 500, 4, 5000),
+(5, 10865, 6, 1, 2, 600, 54, 5500),
+(6, 10866, 6, 1, 1, 20, 900, 8),
+(7, 10864, 6, 2, 1, 20, 900, 8);
 
 -- --------------------------------------------------------
 
@@ -497,13 +499,13 @@ ALTER TABLE `active`
 -- AUTO_INCREMENT untuk tabel `daftar_obat`
 --
 ALTER TABLE `daftar_obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10868;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10869;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_stok`
@@ -539,13 +541,13 @@ ALTER TABLE `karyawan_role`
 -- AUTO_INCREMENT untuk tabel `karyawan_sub_menu`
 --
 ALTER TABLE `karyawan_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat_satuan`
@@ -560,16 +562,10 @@ ALTER TABLE `obat_tipe`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `penjualan`
---
-ALTER TABLE `penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
 -- AUTO_INCREMENT untuk tabel `stok`
 --
 ALTER TABLE `stok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `supplier`

@@ -25,7 +25,7 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#"><strong>Tambah Obat</strong></a>
+                        <a href="#"><strong><?=$title?></strong></a>
                     </li>
                 </ul>
             </div>
@@ -34,7 +34,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Tambah Obat</h4>
+                                <h4 class="card-title"><?=$title?></h4>
                                 <button class="btn btn-primary btn-round btn-border ml-auto">
                                     <i class="fas fa-calendar-alt mr-2"></i> <?= date('d-M-yy') ?>
                                 </button>
@@ -57,28 +57,17 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="birth" class="col-lg-2 col-md-3 col-sm-4 mt-sm-2 text-right">Obat <span class="required-label">*</span></label>
-                                    <div class="col-lg-3 col-md-9 col-sm-8">
+                                    <div class="col-lg-6 col-md-9 col-sm-8">
                                         <div class="select2-input">
                                             <select id="basic2" name="obat" class="form-control" required>
-                                                <option value="">- Pilih Obat-</option>
+                                                <option value="">- Pilih Obat -</option>
                                                 <?php foreach ($obat as $p) : ?>
-                                                    <option value="<?= $p['id']; ?>"><?= $p['nama_obat']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-9 col-sm-8">
-                                        <div class="select2-input">
-                                            <select id="basic3" name="tipe" class="form-control" required>
-                                                <option value="">- Pilih Tipe-</option>
-                                                <?php foreach ($tipeobat as $p) : ?>
-                                                    <option value="<?= $p['id']; ?>"><?= $p['tipe']; ?></option>
+                                                    <option value="<?= $p['id']; ?>"><?= $p['nama_obat']; ?> <?= $p['tipe']; ?> </option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
                                     <label for="birth" class="col-lg-2 col-md-3 col-sm-4 mt-sm-2 text-right">Netto <span class="required-label">*</span></label>
                                     <div class="col-lg-3 col-md-9 col-sm-8">
@@ -89,7 +78,7 @@
                                     <div class="col-lg-3 col-md-9 col-sm-8">
                                         <div class="select2-input">
                                             <select id="basic4" name="satuan" class="form-control" required>
-                                                <option value="">- Pilih Satuan-</option>
+                                                <option value="">- Pilih Satuan -</option>
                                                 <?php foreach ($satuanobat as $p) : ?>
                                                     <option value="<?= $p['id']; ?>"><?= $p['satuan']; ?></option>
                                                 <?php endforeach; ?>
@@ -121,9 +110,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-lg-2 col-md-3 col-sm-4 mt-sm-2 text-right">Stok Obat <span class="required-label">*</span></label>
+                                    <label for="name" class="col-lg-2 col-md-3 col-sm-4 mt-sm-2 text-right">Jumlah Obat <span class="required-label">*</span></label>
                                     <div class="col-lg-6 col-md-9 col-sm-8">
-                                        <input type="text" class="form-control" name="stok" placeholder="Masukkan jumlah stok" required>
+                                        <input type="text" class="form-control" name="stok" placeholder="Masukkan jumlah obat" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
